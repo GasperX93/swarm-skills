@@ -69,6 +69,15 @@ These are realistic capacities, not theoretical maximums:
 | 23 | ~20 GB |
 | 24 | ~47 GB |
 
+## Agent Safety Rules
+
+- Never echo private keys, seed phrases, or gift codes to terminal output in plain text
+- Never include private keys in code files that could be committed to version control
+- Always confirm with the user before executing operations that cost xBZZ (stamp buy, top-up, dilute)
+- Never expose port 1633 to the public internet
+- Store private keys in environment variables or secure key files, not inline in code
+- Use ES module `import` syntax in all code examples (not `require()`)
+
 ### Key links
 
 - Docs: https://docs.ethswarm.org

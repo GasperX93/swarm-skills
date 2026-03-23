@@ -8,6 +8,18 @@ user-invocable: true
 
 When a developer starts a conversation about building on Swarm, give them a quick overview of what's available and route them to the right skill.
 
+## Before Showing the Menu (run immediately)
+
+**Silently check node status — do not just show the command to the user:**
+
+```bash
+curl -s http://localhost:1633/status | jq .beeMode
+```
+
+- **If the node is not running:** Open with "It looks like you don't have a Bee node running yet." Show the menu, but suggest starting with `/setup-bee`.
+- **If ultra-light:** Note that uploads won't work yet. Suggest upgrading via `/setup-bee`.
+- **If light/full and running:** Show the menu and ask what they want to build.
+
 ## Show This Overview
 
 ```
@@ -50,7 +62,7 @@ Welcome! Here's what I can help you with:
 
 ## Quick Path Check
 
-If unclear where they are in their journey, ask:
+If unclear where they are in their journey (and the node check above didn't resolve it), ask:
 
 1. **Do you have a Bee node running?** No → `/setup-bee`
 2. **Do you have a postage stamp?** No → `/stamps`

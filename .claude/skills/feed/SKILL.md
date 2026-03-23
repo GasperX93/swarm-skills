@@ -8,33 +8,36 @@ user-invocable: true
 
 Guide a developer through creating and using feeds on Swarm. Feeds provide a stable address that always points to the latest content — the URL never changes even when content is updated.
 
+## Before Starting (run immediately)
+
+**Run these checks now — do not just show the commands to the user:**
+
+1. Node running?
+   ```bash
+   curl -s http://localhost:1633/status | jq .beeMode
+   ```
+   If this fails → route to `/setup-bee`
+
+2. Stamp available?
+   ```bash
+   curl -s http://localhost:1633/stamps | jq '.stamps[] | select(.usable==true) | {batchID, depth, batchTTL}'
+   ```
+   If no usable stamps → route to `/stamps`
+
+3. Existing identities/feeds?
+   ```bash
+   swarm-cli identity list 2>/dev/null
+   ```
+
+Present results briefly. If the developer already has an identity and feed, skip to [Update the feed](#update-the-feed) below.
+
 ## What to Ask
 
-1. **Do you already have a feed?** Check existing identities and feeds first (see below).
-2. **What will the feed hold?** (website, app state, blog, data updates)
-3. **bee-js or swarm-cli?**
-4. **Do you have a stamp?** If not, guide them to `/stamps` first.
-
-## Check Existing Feeds First
-
-Before creating a new feed, list existing identities and feeds:
-
-```bash
-# List identities
-swarm-cli identity list
-
-# Check a specific feed
-swarm-cli feed print \
-  --identity <IDENTITY_NAME> \
-  --topic-string <TOPIC>
-```
-
-If the developer already has an identity and feed, skip to [Update the feed](#update-the-feed) below.
+1. **What will the feed hold?** (website, app state, blog, data updates)
+2. **bee-js or swarm-cli?**
 
 ## Prerequisites
 
-- Running Bee light node at `http://localhost:1633` — if not set up yet, guide them to `/setup-bee`
-- A valid postage stamp batch ID — guide to `/stamps` if needed
 - For bee-js: `npm install @ethersphere/bee-js`
 - For swarm-cli: `npm install -g @ethersphere/swarm-cli`
 
@@ -67,7 +70,7 @@ console.log("Private key:", pk.toHex());
 console.log("Address:", pk.publicKey().address().toHex());
 ```
 
-Store the private key securely. Use a separate key per feed.
+> **Security:** Store this private key securely (e.g., environment variable or encrypted keyfile). Never commit it to version control. Losing this key means losing the ability to update this feed.
 
 ### Write to a feed
 
@@ -173,7 +176,7 @@ swarm-cli feed print \
 
 ## Important Notes
 
-- Always use **immutable** stamp batches with feeds
+- Always use **immutable** stamp batches with feeds — immutable stamps prevent accidental overwrite of historical feed entries that the feed index still references
 - Only the feed owner (holder of the private key) can publish updates
 - Anyone can read a feed knowing the owner address + topic (or the manifest hash)
 - Old content remains on Swarm — the feed just points to the latest version

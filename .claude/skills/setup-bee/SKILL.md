@@ -137,15 +137,17 @@ Save the **Stamp ID** returned.
 
 ### Stamp sizing
 
-| Depth | Capacity | | Duration | Amount |
-|-------|----------|-|----------|--------|
-| 17 | ~1 GB | | 1 day | 1335104641 |
-| 18 | ~2 GB | | 1 week | 9345732487 |
-| 20 | ~8 GB | | 1 month | 40053139205 |
-| 22 | ~32 GB | | 3 months | 120159417615 |
-| 24 | ~128 GB | | 1 year | 480637670460 |
+These are **effective (realistic) capacities** — not theoretical maximums:
 
-Formula: `depth = 17 + ceil(log2(desired_GB))`, `amount = 1335104641 * desired_days`
+| Depth | Effective capacity | | Duration | Amount |
+|-------|-------------------|-|----------|--------|
+| 17 | ~7 MB | | 1 day | 1335104641 |
+| 19 | ~110 MB | | 1 week | 9345732487 |
+| 20 | ~680 MB | | 1 month | 40053139205 |
+| 21 | ~2.6 GB | | 3 months | 120159417615 |
+| 22 | ~7.7 GB | | 1 year | 480637670460 |
+
+Formula: `amount = 1335104641 * desired_days`. For capacity, see `/stamps` for the full sizing guide.
 
 ### Manage stamps later
 

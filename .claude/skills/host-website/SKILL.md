@@ -8,12 +8,27 @@ user-invocable: true
 
 Guide a developer through hosting a static website on Swarm. Ask which method they prefer (swarm-cli or bee-js), then walk them through step by step.
 
+## Before Starting (run immediately)
+
+**Run these checks now — do not just show the commands to the user:**
+
+1. Node running?
+   ```bash
+   curl -s http://localhost:1633/status | jq .beeMode
+   ```
+   If this fails → route to `/setup-bee`
+
+2. Stamp available?
+   ```bash
+   curl -s http://localhost:1633/stamps | jq '.stamps[] | select(.usable==true) | {batchID, depth, batchTTL}'
+   ```
+   If no usable stamps → route to `/stamps`
+
+Present results briefly, then proceed.
+
 ## Prerequisites
 
-Before starting, confirm the developer has:
-- A running Bee node at `http://localhost:1633`
-- A valid postage stamp batch (if not, guide them to buy one first)
-- Static website files with at least an `index.html`
+- Static website files with at least an `index.html` (common output folders: `dist/`, `build/`, `out/`, `public/`)
 - swarm-cli installed (`npm install -g @ethersphere/swarm-cli`) OR bee-js installed (`npm install @ethersphere/bee-js`)
 
 ## Decision: One-time upload vs Feed (updateable)
@@ -89,17 +104,17 @@ console.log("Swarm hash:", result.reference.toHex());
 #### Generate a publisher key (first time only)
 
 ```javascript
-const crypto = require('crypto');
-const { PrivateKey } = require('@ethersphere/bee-js');
+import crypto from "crypto";
+import { PrivateKey } from "@ethersphere/bee-js";
 
-const hexKey = '0x' + crypto.randomBytes(32).toString('hex');
+const hexKey = "0x" + crypto.randomBytes(32).toString("hex");
 const privateKey = new PrivateKey(hexKey);
 
-console.log('Private key:', privateKey.toHex());
-console.log('Public address:', privateKey.publicKey().address().toHex());
+console.log("Public address:", privateKey.publicKey().address().toHex());
+// Store the private key securely — never commit it to version control
 ```
 
-Store the private key securely. Use a separate key per feed.
+> **Security:** Store this private key securely (e.g., environment variable or encrypted keyfile). Never commit it to version control. Losing this key means losing the ability to update this feed.
 
 #### Upload website + create feed
 
@@ -165,6 +180,24 @@ Some RPC endpoints don't resolve ENS on localhost. Working alternatives:
 - `https://mainnet.infura.io/v3/<your-key>`
 - `https://eth-mainnet.public.blastapi.io`
 - Your own Ethereum node
+
+## Stamp Expiry Warning
+
+When your stamp expires, your website becomes inaccessible — silently. ENS will still resolve but the content will be gone.
+
+- Monitor stamp TTL: `swarm-cli stamp show <stamp-id>`
+- Top up before expiry: `swarm-cli stamp topup --stamp <stamp-id> --amount <amount>`
+- Set a calendar reminder for stamp renewal
+- For production sites, use stamps with **6+ month duration**
+
+## ENS Prerequisites
+
+ENS integration requires:
+- An existing ENS name (buy at [app.ens.domains](https://app.ens.domains))
+- A funded Ethereum mainnet wallet (ETH for gas)
+- Familiarity with ENS content records
+
+If you don't have these, use the raw `bzz://` link or [Beeport](https://beeport.ethswarm.org) instead.
 
 ## Reference
 

@@ -8,11 +8,29 @@ user-invocable: true
 
 Guide a developer through setting up real-time messaging on Swarm. Two protocols available depending on the use case.
 
+## Before Starting (run immediately)
+
+**Run these checks now — do not just show the commands to the user:**
+
+1. Node running?
+   ```bash
+   curl -s http://localhost:1633/status | jq .beeMode
+   ```
+   If this fails → route to `/setup-bee`
+
+2. Stamp available?
+   ```bash
+   curl -s http://localhost:1633/stamps | jq '.stamps[] | select(.usable==true) | {batchID, depth, batchTTL}'
+   ```
+   If no usable stamps → route to `/stamps`
+
+Present results briefly, then proceed.
+
 ## What to Ask
 
 1. **What's the messaging pattern?** Many-to-one (notifications, chat) → GSOC. Point-to-point (private messages) → PSS.
-2. **Do they have a Bee node running?** Guide to `/setup-bee` if not.
-3. **Do they have a stamp?** Guide to `/stamps` if not. **GSOC requires mutable stamps.**
+
+**Note:** GSOC and PSS are currently only supported via bee-js. swarm-cli does not have messaging commands.
 
 ## Which Protocol?
 
@@ -27,8 +45,6 @@ Guide a developer through setting up real-time messaging on Swarm. Two protocols
 
 ## Prerequisites
 
-- Running Bee node at `http://localhost:1633` — guide to `/setup-bee` if needed
-- A valid postage stamp — guide to `/stamps` if needed
 - **GSOC:** Service node must be a full node. Stamps must be **mutable** (`immutable: false`).
 - **PSS:** Receiving node must be a full node.
 - `npm install @ethersphere/bee-js`

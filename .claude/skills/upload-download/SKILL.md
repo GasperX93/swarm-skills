@@ -8,16 +8,32 @@ user-invocable: true
 
 Guide a developer through uploading and downloading data on Swarm. Requires a running Bee light node and a postage stamp.
 
+## Before Starting (run immediately)
+
+**Run these checks now — do not just show the commands to the user:**
+
+1. Node running?
+   ```bash
+   curl -s http://localhost:1633/status | jq .beeMode
+   ```
+   If this fails → route to `/setup-bee`
+
+2. Stamp available?
+   ```bash
+   curl -s http://localhost:1633/stamps | jq '.stamps[] | select(.usable==true) | {batchID, depth, batchTTL}'
+   ```
+   If no usable stamps → route to `/stamps`
+
+Present results briefly, then proceed.
+
 ## What to Ask
 
 1. **What are you uploading?** (raw data/string, single file, multiple files, directory/website)
 2. **Environment?** (Node.js or browser)
-3. **Do you have a stamp?** If not, guide them to `/stamps` first.
+3. **bee-js or swarm-cli?**
 
 ## Prerequisites
 
-- Running Bee light node at `http://localhost:1633` — if not set up yet, guide them to `/setup-bee` first
-- A valid postage stamp batch ID — if they don't have one, guide them to `/stamps` first
 - For bee-js: `npm install @ethersphere/bee-js`
 - For swarm-cli: `npm install -g @ethersphere/swarm-cli`
 

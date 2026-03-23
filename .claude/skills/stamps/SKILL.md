@@ -28,6 +28,8 @@ If they have a usable stamp with enough capacity and TTL, ask if they want to re
 2. **How long should it persist?** Offer the duration presets below.
 3. **Will you update/overwrite the data?** (mutable vs immutable)
 
+**If unsure, recommend:** depth 20 + 3 months (~680 MB effective, amount ~120,159,417,615) — a safe starting point for development and testing.
+
 ## How Stamps Work
 
 - **Depth** controls capacity (how much data you can upload)

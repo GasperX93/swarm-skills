@@ -8,6 +8,24 @@ user-invocable: true
 
 Guide a developer through encrypting data on Swarm and controlling who can read it. ACT (Access Control Trie) lets you define per-account read permissions using Ethereum public keys.
 
+## Before Starting (run immediately)
+
+**Run these checks now — do not just show the commands to the user:**
+
+1. Node running?
+   ```bash
+   curl -s http://localhost:1633/status | jq .beeMode
+   ```
+   If this fails → route to `/setup-bee`
+
+2. Stamp available?
+   ```bash
+   curl -s http://localhost:1633/stamps | jq '.stamps[] | select(.usable==true) | {batchID, depth, batchTTL}'
+   ```
+   If no usable stamps → route to `/stamps`
+
+Present results briefly, then proceed.
+
 ## What to Ask
 
 1. **What data are you protecting?** (files, website, app data)
@@ -16,8 +34,6 @@ Guide a developer through encrypting data on Swarm and controlling who can read 
 
 ## Prerequisites
 
-- Running Bee light node at `http://localhost:1633` — if not set up yet, guide them to `/setup-bee`
-- A valid postage stamp — guide to `/stamps` if needed
 - For swarm-cli: `npm install -g @ethersphere/swarm-cli`
 - For bee-js: `npm install @ethersphere/bee-js`
 

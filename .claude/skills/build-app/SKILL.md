@@ -8,14 +8,29 @@ user-invocable: true
 
 Guide a developer through scaffolding and building an app that uses Swarm for decentralized storage.
 
+## Before Starting (run immediately)
+
+**Run these checks now — do not just show the commands to the user:**
+
+1. Node running?
+   ```bash
+   curl -s http://localhost:1633/status | jq .beeMode
+   ```
+   If this fails → route to `/setup-bee`
+
+2. Existing project?
+   ```bash
+   ls package.json 2>/dev/null && echo "EXISTING_PROJECT" || echo "NEW_PROJECT"
+   ```
+   - **If `package.json` exists:** Default to Option B (add bee-js). Ask: "I see you already have a project here. Want me to add bee-js to it, or scaffold a separate Swarm project?"
+   - **If no project:** Default to Option A (scaffold). Ask what type.
+
 ## What to Ask
 
 1. **What kind of app?** (Node.js backend, browser/React frontend, or both)
-2. **Do you have a Bee node running?** If not, guide them to `/setup-bee` first.
 
 ## Prerequisites
 
-- Running Bee light node at `http://localhost:1633` — if not set up yet, guide them to `/setup-bee`
 - Node.js 18+
 
 ## Option A: Scaffold with create-swarm-app (recommended)
@@ -146,11 +161,12 @@ Not all features work on all node types:
 ## What's Next
 
 Once the app is running, the developer can add:
-- **File uploads** → `/upload`
+- **File uploads** → `/upload-download`
 - **Dynamic content** → `/feed`
 - **Website hosting** → `/host-website`
 - **Access control** → `/act`
 - **Real-time messaging** → `/messaging`
+- **AI agent integration** → [swarm-mcp](https://github.com/ethersphere/swarm-mcp) gives AI tools native Swarm capabilities via MCP
 
 ## Reference
 
