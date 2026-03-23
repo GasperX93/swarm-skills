@@ -91,6 +91,25 @@ Formula shortcut: `amount ≈ 1,335,104,641 * desired_days`
 
 ## Buy a Stamp
 
+### Before buying — estimate cost and check balance
+
+**Always do this before purchasing — do not skip:**
+
+1. Check wallet balance:
+   ```bash
+   curl -s http://localhost:1633/wallet | jq '{bzzBalance, nativeTokenBalance}'
+   ```
+
+2. Calculate cost using bee-js utility or this formula:
+   ```
+   cost in PLUR = amount * (2 ^ depth)
+   cost in BZZ  = cost in PLUR / 10^16
+   ```
+
+3. Present the estimate to the user: depth, effective capacity, estimated TTL, estimated cost in BZZ, and current balance. **Ask for confirmation before proceeding.**
+
+If balance is insufficient, suggest funding via `/setup-bee` or reusing an existing stamp.
+
 ### Via swarm-cli
 
 ```bash
