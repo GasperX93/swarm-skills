@@ -13,12 +13,12 @@ Guide a developer through listing, buying, sizing, topping up, and managing post
 **Immediately run this command** before doing anything else — do not just show it to the user:
 
 ```bash
-curl -s http://localhost:1633/stamps | jq '.stamps[] | {batchID, depth, usable, batchTTL}'
+curl -s http://localhost:1633/stamps | jq '.stamps[] | {batchID, depth, usable, batchTTL, immutableFlag, utilization}'
 ```
 
 If the command fails (connection refused, etc.), the node is not running — route to `/setup-bee`.
 
-Present the results as a table with: batch ID (shortened), depth, effective capacity, usable status, and approximate TTL in days (batchTTL / 86400).
+Present the results as a table with: batch ID (shortened), depth, effective capacity, type (mutable/immutable from `immutableFlag`), utilization, and approximate TTL in days (batchTTL / 86400).
 
 If they have a usable stamp with enough capacity and TTL, ask if they want to reuse it instead of buying a new one. They can also top up or dilute an existing stamp (see Manage Stamps below).
 
