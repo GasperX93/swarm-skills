@@ -1,10 +1,12 @@
-# Swarm Skills for Claude Code
+# Swarm Skills
 
-Turn [Claude Code](https://claude.ai/code) into a Swarm development assistant. Copy one folder into your project, type `/help`, and get hands-on guidance for storing data, hosting websites, building dApps, and more on the [Swarm](https://ethswarm.org) decentralized storage network.
+AI-powered interactive guides for building on the [Swarm](https://ethswarm.org) decentralized storage network. Copy one folder into your project, type `/help`, and get hands-on guidance for storing data, hosting websites, building dApps, and more.
 
 ## What This Is
 
-Swarm Skills is a set of interactive guides (Claude Code skills) that live inside your project. Each skill checks your environment, runs real commands against your Bee node, and walks you through the task step by step. No separate docs to read — just type the skill name and go.
+Swarm Skills is a set of interactive guides that live inside your project and work with AI coding assistants. Each skill checks your environment, runs real commands against your Bee node, and walks you through the task step by step. No separate docs to read — just type the skill name and go.
+
+Currently supported: [Claude Code](https://claude.ai/code). Support for Cursor, GitHub Copilot, Windsurf, and Codex is planned.
 
 ## Quick Start
 
@@ -86,7 +88,7 @@ These aren't static docs. Each skill:
 
 ## Requirements
 
-- [Claude Code](https://claude.ai/code) (Claude's CLI tool)
+- An AI coding assistant ([Claude Code](https://claude.ai/code) currently supported; more coming)
 - [Node.js](https://nodejs.org) 18+
 - For most skills: a running [Bee](https://docs.ethswarm.org/docs/bee/installation/install) light node at `http://localhost:1633`
 
@@ -103,7 +105,7 @@ Swarm is a decentralized peer-to-peer storage network and part of the Ethereum e
 
 ## Contributing
 
-Each skill is a standalone markdown file in `.claude/skills/`. To edit or add a skill:
+Skills are standalone markdown files (currently in `.claude/skills/` for Claude Code). To edit or add a skill:
 
 1. Skills should be self-contained — include everything needed for that topic.
 2. Always check prerequisites and route to the right skill if something is missing.

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Purpose
 
-This is the **swarm-skills** repo — a collection of Claude Code skills that guide developers through building on the Swarm decentralized storage network. There is no application code, no build system, and no tests. The repo contains only skill definitions (markdown files).
+This is the **swarm-skills** repo — AI-powered interactive guides that help developers build on the Swarm decentralized storage network. Currently packaged as Claude Code skills, with support for other AI coding tools (Cursor, GitHub Copilot, Windsurf, Codex) planned. There is no application code, no build system, and no tests. The repo contains only skill definitions (markdown files).
 
 ## Structure
 
