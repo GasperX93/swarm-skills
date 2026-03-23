@@ -122,7 +122,7 @@ Upload new content, then write the new reference to the same feed:
 
 ```javascript
 const newUpload = await bee.uploadFile(batchId, "Updated content", "note.txt");
-await writer.upload(batchId, newUpload.reference);
+await writer.uploadReference(batchId, newUpload.reference);
 // Same manifest URL now serves the updated content
 ```
 

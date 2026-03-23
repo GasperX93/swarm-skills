@@ -8,20 +8,20 @@ This is the **swarm-skills** repo — AI-powered interactive guides that help de
 
 ## Structure
 
-Skills live in `.claude/skills/`. Each `.md` file is a self-contained skill that Claude Code discovers automatically.
+Skills live in `.claude/skills/`. Each skill is a directory containing a `SKILL.md` file that Claude Code discovers automatically.
 
 ```
 .claude/skills/
-  help.md             — Entry point: overview + routing
-  setup-bee.md        — Install and run a Bee node
-  stamps.md           — List, buy, and manage postage stamps
-  upload-download.md  — Upload and download data/files
-  host-website.md     — Deploy a website to Swarm
-  build-app.md        — Scaffold a dApp or add bee-js
-  feed.md             — Feeds for dynamic content
-  act.md              — Access control (encrypted data)
-  messaging.md        — Real-time messaging (GSOC/PSS)
-  troubleshoot.md     — Diagnose node and upload issues
+  help/SKILL.md             — Entry point: overview + routing
+  setup-bee/SKILL.md        — Install and run a Bee node
+  stamps/SKILL.md           — List, buy, and manage postage stamps
+  upload-download/SKILL.md  — Upload and download data/files
+  host-website/SKILL.md     — Deploy a website to Swarm
+  build-app/SKILL.md        — Scaffold a dApp or add bee-js
+  feed/SKILL.md             — Feeds for dynamic content
+  act/SKILL.md              — Access control (encrypted data)
+  messaging/SKILL.md        — Real-time messaging (GSOC/PSS)
+  troubleshoot/SKILL.md     — Diagnose node and upload issues
 ```
 
 ## Editing Skills
