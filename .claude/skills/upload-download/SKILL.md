@@ -63,7 +63,7 @@ const bee = new Bee("http://localhost:1633");
 
 const file = new File(["Hello Swarm!"], "hello.txt", { type: "text/plain" });
 const { reference } = await bee.uploadFile(batchId, file);
-console.log("Reference:", String(reference));
+console.log("Reference:", reference.toHex());
 ```
 
 ### swarm-cli
@@ -97,7 +97,7 @@ const files = [
 ];
 
 const res = await bee.uploadFiles(batchId, files);
-console.log("Collection ref:", String(res.reference));
+console.log("Collection ref:", res.reference.toHex());
 ```
 
 ### Node.js (directory)

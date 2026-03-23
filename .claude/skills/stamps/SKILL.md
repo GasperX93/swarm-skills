@@ -138,14 +138,20 @@ curl -s -X POST http://localhost:1633/stamps/120159417615/22 -H "immutable: fals
 
 Returns `batchID` and `txHash`.
 
-### Via bee-js
+### Via bee-js (recommended)
 
 ```javascript
-import { Bee } from '@ethersphere/bee-js'
+import { Bee, Size, Duration } from '@ethersphere/bee-js'
 
 const bee = new Bee('http://localhost:1633')
-const batchId = await bee.createPostageBatch('120159417615', 22)
+const batchId = await bee.buyStorage(Size.fromGigabytes(7.7), Duration.fromDays(90))
 console.log('Stamp ID:', batchId)
+```
+
+Low-level alternative (if you need exact depth/amount control):
+
+```javascript
+const batchId = await bee.createPostageBatch('120159417615', 22)
 ```
 
 **Important:** Wait several minutes after purchase for the stamp to propagate on the network before using it.

@@ -87,7 +87,7 @@ const upload = await bee.uploadFile(batchId, "My content", "note.txt");
 
 // Write to feed
 const writer = bee.makeFeedWriter(topic, pk);
-await writer.upload(batchId, upload.reference);
+await writer.uploadReference(batchId, upload.reference);
 ```
 
 ### Read from a feed

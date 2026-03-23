@@ -55,7 +55,9 @@ swarm-cli upload test.txt --act --stamp <BATCH_ID>
 
 First upload — omit `--act-history-address` to create a new history. The response returns:
 - Encrypted Swarm reference
-- History reference (save this for future uploads and downloads)
+- History reference
+
+> **Warning:** Save the history reference securely. Losing it means **permanent, irrecoverable loss** of access to your encrypted data. There is no recovery mechanism.
 
 For subsequent uploads to the same history:
 
@@ -138,7 +140,7 @@ const result = await bee.uploadFile(batchId, 'Secret data', 'secret.txt', {
 
 console.log('Encrypted reference:', result.reference.toHex())
 console.log('History address:', result.historyAddress.toHex())
-// Save both — you need them for downloads and grantee management
+// WARNING: Save both — losing the history address means permanent loss of access to encrypted data
 ```
 
 ### Download with ACT

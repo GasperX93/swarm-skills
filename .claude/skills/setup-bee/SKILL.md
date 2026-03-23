@@ -141,13 +141,13 @@ When "Chainsync" shows synchronized, your node is ready.
 Required before any upload.
 
 ```bash
-swarm-cli stamp buy --amount 80106278460 --depth 22
+swarm-cli stamp buy --depth 22 --amount 120159417615
 ```
 
 Or via API:
 
 ```bash
-curl -X POST http://localhost:1633/stamps/80106278460/22
+curl -X POST http://localhost:1633/stamps/120159417615/22
 ```
 
 Save the **Stamp ID** returned.

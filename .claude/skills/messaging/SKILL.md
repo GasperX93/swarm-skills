@@ -83,6 +83,8 @@ Share the **public key** and **overlay address** with writer nodes.
 
 ### Writer node — send messages
 
+> **Note:** The writer uses port 1643, assuming a separate Bee node. If testing on a single machine, start a second node with `--api-addr 127.0.0.1:1643 --p2p-addr :1644 --data-dir ~/.bee2`. For single-node testing, use `http://localhost:1633` instead.
+
 ```javascript
 import { Bee, NULL_IDENTIFIER } from '@ethersphere/bee-js'
 
@@ -135,6 +137,8 @@ console.log('Received:', message.toUtf8())
 ```
 
 ### Send a message
+
+> **Note:** Uses port 1643 (separate sender node). See GSOC writer note above for single-machine setup.
 
 ```javascript
 import { Bee, Topic, Utils } from '@ethersphere/bee-js'
