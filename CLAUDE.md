@@ -31,6 +31,7 @@ Skills live in `.claude/skills/`. Each `.md` file is a self-contained skill that
 - When referencing other skills, use the `/skill-name` format.
 - Code examples should cover both **bee-js** and **swarm-cli** where applicable.
 - Keep commands and code up to date with the latest Bee and bee-js versions.
+- Skills last verified against: **bee-js 8.x**, **swarm-cli 2.x**, **Bee 2.x**
 
 ## Swarm Quick Reference
 

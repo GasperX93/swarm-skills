@@ -8,19 +8,36 @@ user-invocable: true
 
 Guide a developer through getting a Bee light node running so they can build on Swarm.
 
-## Before Starting
+## Before Starting (run immediately)
 
-Fetch the latest Bee version tag from GitHub:
+**Run these checks now — do not just show the commands to the user:**
 
-```bash
-curl -s https://api.github.com/repos/ethersphere/bee/releases/latest | jq -r .tag_name
-```
+1. Detect platform:
+   ```bash
+   uname -s
+   ```
+   - **Linux:** Use the install script directly
+   - **Darwin (macOS):** Use the install script (or Homebrew if available)
+   - **Other / Windows:** Advise WSL2 first, then the Linux install path
+
+2. Fetch the latest Bee version tag:
+   ```bash
+   curl -s https://api.github.com/repos/ethersphere/bee/releases/latest | jq -r .tag_name
+   ```
 
 Use this tag in the install command below (replace TAG value).
 
+## Node Modes
+
+| Mode | Can download | Can upload | Needs funding | Use case |
+|------|-------------|-----------|---------------|----------|
+| Ultra-light | Yes | No | No | Exploring the API, downloading data |
+| Light | Yes | Yes | Yes (~0.01 xDAI + ~0.2 xBZZ) | Development, uploads, feeds |
+| Full | Yes | Yes | Yes + staking | Running infrastructure, PSS subscribe |
+
 ## Requirements
 
-- Linux or macOS (Windows: use WSL)
+- Linux or macOS (Windows: use WSL2)
 - Node.js v18+ and npm
 - curl or wget
 - ~0.01 xDAI + ~0.2 xBZZ on Gnosis Chain (for upgrading to light node)
@@ -69,9 +86,9 @@ Get your wallet address:
 curl -s localhost:1633/addresses | jq .ethereum
 ```
 
-Send tokens to this address on Gnosis Chain:
-- **xDAI:** ~0.01 (gas fees)
-- **xBZZ:** ~0.2+ (scales with usage)
+Send tokens to this address on **Gnosis Chain** (not Ethereum mainnet):
+- **xDAI** — gas for transactions on Gnosis Chain (~0.01 needed)
+- **xBZZ** — payment for storage on Swarm (~0.2+ needed, scales with usage)
 
 ### Funding options
 

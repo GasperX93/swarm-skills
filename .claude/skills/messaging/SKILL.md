@@ -171,6 +171,16 @@ console.log('PSS Public Key:', addresses.pssPublicKey)
 | `bee.pssReceive(topic, timeout)` | Wait for one message |
 | `Utils.makeMaxTarget(overlay)` | Create target prefix from overlay address |
 
+## If Something Goes Wrong
+
+| Error | Fix |
+|-------|-----|
+| "stamp not usable" | Wait 2-3 minutes after buying |
+| GSOC fills up fast | Must use **mutable** stamps (`immutable: false`) |
+| PSS messages not arriving | Receiving node must be a **full node** |
+| No messages received | Check overlay address and topic match between sender/receiver |
+| Other errors | Route to `/troubleshoot` |
+
 ## Reference
 
 - GSOC docs: https://docs.ethswarm.org/docs/develop/tools-and-features/gsoc

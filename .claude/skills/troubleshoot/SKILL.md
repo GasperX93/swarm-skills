@@ -6,7 +6,30 @@ user-invocable: true
 
 # Troubleshoot Bee Node
 
-Guide a developer through diagnosing and fixing common Bee node issues. Run the checks below in order to isolate the problem.
+Guide a developer through diagnosing and fixing common Bee node issues. **Run these checks in order** — each step depends on the previous one passing. Stop at the first failure, fix it, then continue.
+
+## Triage Tree
+
+```
+(1) Is the bee process running?
+    └─ No → start bee / check port conflict
+    └─ Yes ↓
+(2) Is the API reachable at localhost:1633?
+    └─ No → check firewall / port binding
+    └─ Yes ↓
+(3) Does the node have peers / is it synced?
+    └─ No → wait / check RPC endpoint
+    └─ Yes ↓
+(4) Is the wallet funded?
+    └─ No → route to /setup-bee funding
+    └─ Yes ↓
+(5) Does a valid, non-expired stamp exist?
+    └─ No → route to /stamps
+    └─ Yes ↓
+(6) Is the upload/download itself failing?
+    └─ Yes → check error code table below
+    └─ No → problem is elsewhere
+```
 
 ## Step 1: Is the node running?
 
@@ -166,6 +189,17 @@ curl -s http://localhost:1633/wallet | jq
 curl -s http://localhost:1633/stamps | jq '.stamps[] | {batchID, usable, batchTTL}'
 swarm-cli status
 ```
+
+## Common Bee API Error Codes
+
+| Code | Meaning | Fix |
+|------|---------|-----|
+| 400 | Bad request (malformed input) | Check request format against API docs |
+| 402 | No usable stamp / insufficient postage | Buy or top up a stamp → `/stamps` |
+| 404 | Content not found | Content may have expired, reference is wrong, or ACT flags missing |
+| 422 | Unprocessable entity | Check parameter types (e.g., batch ID format) |
+| 500 | Internal server error | Check Bee logs, restart node |
+| 503 | Node not ready (still syncing) | Wait for chain sync to complete |
 
 ## Security Reminder
 

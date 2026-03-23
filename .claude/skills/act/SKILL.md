@@ -126,7 +126,38 @@ swarm-cli grantee get <GRANTEE_REF>
 
 ### Upload with ACT
 
-ACT upload uses HTTP headers. Use the Bee API directly or bee-js ACT methods:
+```javascript
+import { Bee } from '@ethersphere/bee-js'
+
+const bee = new Bee('http://localhost:1633')
+
+// Upload a file with ACT encryption enabled
+const result = await bee.uploadFile(batchId, 'Secret data', 'secret.txt', {
+  act: true
+})
+
+console.log('Encrypted reference:', result.reference.toHex())
+console.log('History address:', result.historyAddress.toHex())
+// Save both — you need them for downloads and grantee management
+```
+
+### Download with ACT
+
+```javascript
+import { Bee } from '@ethersphere/bee-js'
+
+const bee = new Bee('http://localhost:1633')
+
+const file = await bee.downloadFile(reference, 'secret.txt', {
+  actHistoryAddress: historyAddress,
+  actPublisher: publisherPublicKey
+})
+
+console.log('Decrypted:', file.data.toUtf8())
+// Without ACT parameters, this returns "not found"
+```
+
+### Manage grantees
 
 ```javascript
 import { Bee } from '@ethersphere/bee-js'
@@ -164,6 +195,16 @@ await bee.patchGrantees(batchId, granteeReference, historyReference, {
 - Revoking access prevents future decryption but doesn't delete already-downloaded data
 - Invalid history addresses return "not found" errors
 - Wait at least 1 second between grantee list updates
+
+## If Something Goes Wrong
+
+| Error | Fix |
+|-------|-----|
+| "not found" on download | Missing ACT flags, wrong history address, or access revoked |
+| "act: invalid history" | Wrong history address — double-check reference |
+| "stamp not usable" | Wait 2-3 minutes after buying |
+| 1-second update error | Wait at least 1 second between grantee list updates |
+| Other errors | Route to `/troubleshoot` |
 
 ## Reference
 

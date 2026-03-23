@@ -181,6 +181,16 @@ swarm-cli feed print \
 - Anyone can read a feed knowing the owner address + topic (or the manifest hash)
 - Old content remains on Swarm — the feed just points to the latest version
 
+## If Something Goes Wrong
+
+| Error | Fix |
+|-------|-----|
+| "stamp not usable" | Wait 2-3 minutes after buying |
+| "insufficient funds" | Wallet needs xBZZ — see `/setup-bee` |
+| "feed not found" | Wrong identity/topic combination, or feed hasn't been written to yet |
+| Connection refused | Node isn't running — route to `/setup-bee` |
+| Other errors | Route to `/troubleshoot` |
+
 ## Reference
 
 - Feeds: https://docs.ethswarm.org/docs/develop/tools-and-features/feeds

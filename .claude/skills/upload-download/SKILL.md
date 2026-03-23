@@ -196,6 +196,17 @@ Headers for upload:
 - `Swarm-Postage-Batch-Id` — required
 - `Content-Type` — recommended
 
+## If Something Goes Wrong
+
+| Error | Fix |
+|-------|-----|
+| "stamp not usable" | Stamp hasn't propagated yet — wait 2-3 minutes after buying |
+| "insufficient funds" | Wallet needs xBZZ — see `/setup-bee` funding section |
+| Connection refused | Node isn't running — route to `/setup-bee` |
+| 402 response | No usable stamp — route to `/stamps` |
+| "not found" on download | Content may have expired, or reference is wrong |
+| Other errors | Route to `/troubleshoot` |
+
 ## Reference
 
 - Upload & download guide: https://docs.ethswarm.org/docs/develop/upload-and-download
