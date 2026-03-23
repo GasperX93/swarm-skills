@@ -1,0 +1,180 @@
+---
+name: setup-bee
+description: Install and run a Bee light node for Swarm development
+user-invocable: true
+---
+
+# Set Up a Bee Node for Development
+
+Guide a developer through getting a Bee light node running so they can build on Swarm.
+
+## Before Starting
+
+Fetch the latest Bee version tag from GitHub:
+
+```bash
+curl -s https://api.github.com/repos/ethersphere/bee/releases/latest | jq -r .tag_name
+```
+
+Use this tag in the install command below (replace TAG value).
+
+## Requirements
+
+- Linux or macOS (Windows: use WSL)
+- Node.js v18+ and npm
+- curl or wget
+- ~0.01 xDAI + ~0.2 xBZZ on Gnosis Chain (for upgrading to light node)
+
+## Step 1: Install Bee
+
+```bash
+curl -s https://raw.githubusercontent.com/ethersphere/bee/master/install.sh | TAG=<LATEST_TAG> bash
+```
+
+Or with wget:
+
+```bash
+wget -q -O - https://raw.githubusercontent.com/ethersphere/bee/master/install.sh | TAG=<LATEST_TAG> bash
+```
+
+Verify: `bee version`
+
+Install swarm-cli:
+
+```bash
+npm install -g @ethersphere/swarm-cli
+```
+
+## Step 2: Start in Ultra-Light Mode
+
+No funding needed — lets you explore the API and download data immediately.
+
+```bash
+bee start \
+  --password YOUR_SECURE_PASSWORD \
+  --api-addr 127.0.0.1:1633
+```
+
+Verify it's running:
+
+```bash
+curl -s http://localhost:1633/status | jq
+```
+
+## Step 3: Fund Your Node
+
+Get your wallet address:
+
+```bash
+curl -s localhost:1633/addresses | jq .ethereum
+```
+
+Send tokens to this address on Gnosis Chain:
+- **xDAI:** ~0.01 (gas fees)
+- **xBZZ:** ~0.2+ (scales with usage)
+
+### Funding options
+
+**Option A — Redeem a gift code (fastest)**
+
+If the developer has a gift code (a private key from Swarm), redeem it directly to the Bee wallet:
+
+```bash
+swarm-cli utility redeem <GIFT_CODE_PRIVATE_KEY>
+```
+
+This transfers xBZZ and xDAI from the gift wallet to the Bee node wallet automatically. The node's wallet address is detected from the running Bee node.
+
+To redeem to a specific wallet instead:
+
+```bash
+swarm-cli utility redeem <GIFT_CODE_PRIVATE_KEY> --target <WALLET_ADDRESS>
+```
+
+**Option B — Multichain top-up (any chain/token, no bridging)**
+
+→ https://fund.ethswarm.org
+
+**Option C — Manual**
+
+xDAI from Gnosis faucets (https://docs.gnosischain.com/tools/Faucets) or bridge (https://bridge.gnosischain.com/). xBZZ from exchanges (https://www.ethswarm.org/get-bzz).
+
+## Step 4: Upgrade to Light Node
+
+Stop the ultra-light node (Ctrl+C), then restart with swap enabled:
+
+```bash
+bee start \
+  --password YOUR_SECURE_PASSWORD \
+  --swap-enable \
+  --api-addr 127.0.0.1:1633 \
+  --blockchain-rpc-endpoint https://xdai.fairdatasociety.org
+```
+
+The node deploys a chequebook and syncs chain data (~5 minutes). Monitor:
+
+```bash
+swarm-cli status
+```
+
+When "Chainsync" shows synchronized, your node is ready.
+
+## Step 5: Buy a Postage Stamp
+
+Required before any upload.
+
+```bash
+swarm-cli stamp buy --amount 80106278460 --depth 22
+```
+
+Or via API:
+
+```bash
+curl -X POST http://localhost:1633/stamps/80106278460/22
+```
+
+Save the **Stamp ID** returned.
+
+### Stamp sizing
+
+| Depth | Capacity | | Duration | Amount |
+|-------|----------|-|----------|--------|
+| 17 | ~1 GB | | 1 day | 1335104641 |
+| 18 | ~2 GB | | 1 week | 9345732487 |
+| 20 | ~8 GB | | 1 month | 40053139205 |
+| 22 | ~32 GB | | 3 months | 120159417615 |
+| 24 | ~128 GB | | 1 year | 480637670460 |
+
+Formula: `depth = 17 + ceil(log2(desired_GB))`, `amount = 1335104641 * desired_days`
+
+### Manage stamps later
+
+```bash
+swarm-cli stamp list
+swarm-cli stamp show <stamp-id>
+swarm-cli stamp topup --stamp <stamp-id> --amount <amount>
+```
+
+## Step 6: Test It
+
+```bash
+# Upload
+swarm-cli upload --stdin --stamp <BATCH_ID> <<< "Hello Swarm"
+
+# Download
+swarm-cli download <SWARM_HASH>
+```
+
+If this works, the node is fully operational.
+
+## Security
+
+Always bind API to localhost (`127.0.0.1:1633`). Never expose port 1633 to the public internet.
+
+## Reference
+
+- Quick start: https://docs.ethswarm.org/docs/bee/installation/quick-start
+- Fund your node: https://docs.ethswarm.org/docs/bee/installation/fund-your-node
+- Configuration: `bee start --help`
+- Bee API: https://docs.ethswarm.org/api/
+- swarm-cli: https://github.com/ethersphere/swarm-cli

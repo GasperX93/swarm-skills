@@ -1,0 +1,81 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Repository Purpose
+
+This is the **swarm-skills** repo — a collection of Claude Code skills that guide developers through building on the Swarm decentralized storage network. There is no application code, no build system, and no tests. The repo contains only skill definitions (markdown files).
+
+## Structure
+
+Skills live in `.claude/skills/`. Each `.md` file is a self-contained skill that Claude Code discovers automatically.
+
+```
+.claude/skills/
+  help.md             — Entry point: overview + routing
+  setup-bee.md        — Install and run a Bee node
+  stamps.md           — List, buy, and manage postage stamps
+  upload-download.md  — Upload and download data/files
+  host-website.md     — Deploy a website to Swarm
+  build-app.md        — Scaffold a dApp or add bee-js
+  feed.md             — Feeds for dynamic content
+  act.md              — Access control (encrypted data)
+  messaging.md        — Real-time messaging (GSOC/PSS)
+  troubleshoot.md     — Diagnose node and upload issues
+```
+
+## Editing Skills
+
+- Each skill is standalone — it should contain everything needed for that topic.
+- Skills should always check prerequisites (node running? stamp exists?) and route to the appropriate skill if not.
+- When referencing other skills, use the `/skill-name` format.
+- Code examples should cover both **bee-js** and **swarm-cli** where applicable.
+- Keep commands and code up to date with the latest Bee and bee-js versions.
+
+## Swarm Quick Reference
+
+Swarm is a decentralized peer-to-peer storage network. Files are split into 4KB chunks, distributed across nodes, and retrievable by content hash. Part of Ethereum's ecosystem, production-ready since 2021.
+
+### Developer flow
+
+```
+/help → /setup-bee → /stamps → /upload-download or /build-app
+                                          ↓
+                            /host-website  /feed  /act  /messaging
+```
+
+### Two paths
+
+- **No node needed:** Deploy a website via Beeport (beeport.ethswarm.org)
+- **Everything else:** Requires a Bee light node at `http://localhost:1633`
+
+### Key tools
+
+- **bee-js** (`@ethersphere/bee-js`) — JavaScript SDK
+- **swarm-cli** (`@ethersphere/swarm-cli`) — CLI tool
+- **create-swarm-app** — dApp scaffolding
+- **swarm-mcp** — MCP server for AI agents
+
+### Effective storage capacity (per stamp depth)
+
+These are realistic capacities, not theoretical maximums:
+
+| Depth | Effective capacity |
+|-------|--------------------|
+| 19 | ~110 MB |
+| 20 | ~680 MB |
+| 21 | ~2.6 GB |
+| 22 | ~7.7 GB |
+| 23 | ~20 GB |
+| 24 | ~47 GB |
+
+### Key links
+
+- Docs: https://docs.ethswarm.org
+- bee-js: https://bee-js.ethswarm.org/docs/
+- API: https://docs.ethswarm.org/api/
+- swarm-cli: https://github.com/ethersphere/swarm-cli
+- swarm-mcp: https://github.com/ethersphere/swarm-mcp
+- Beeport: https://beeport.ethswarm.org
+- GitHub: https://github.com/ethersphere
+- Discord: https://discord.gg/hyCr9BMX9U

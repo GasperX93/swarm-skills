@@ -1,0 +1,174 @@
+---
+name: host-website
+description: Deploy a static website to Swarm with optional ENS
+user-invocable: true
+---
+
+# Host a Website on Swarm
+
+Guide a developer through hosting a static website on Swarm. Ask which method they prefer (swarm-cli or bee-js), then walk them through step by step.
+
+## Prerequisites
+
+Before starting, confirm the developer has:
+- A running Bee node at `http://localhost:1633`
+- A valid postage stamp batch (if not, guide them to buy one first)
+- Static website files with at least an `index.html`
+- swarm-cli installed (`npm install -g @ethersphere/swarm-cli`) OR bee-js installed (`npm install @ethersphere/bee-js`)
+
+## Decision: One-time upload vs Feed (updateable)
+
+Ask: "Will you need to update this website later, or is this a one-time deploy?"
+
+- **One-time** → Upload by hash (simpler, but new hash on every change, requires ENS update each time)
+- **Updateable** → Use a Feed (fixed manifest URL, update content without changing ENS)
+
+**Always recommend Feeds for production websites.**
+
+## Method 1: swarm-cli
+
+### One-time upload
+
+```bash
+swarm-cli upload ./website \
+  --stamp <BATCH_ID> \
+  --index-document index.html \
+  --error-document 404.html
+```
+
+Access at: `http://localhost:1633/bzz/<SWARM_HASH>/`
+
+### Feed-based (recommended)
+
+#### Step 1: Create publisher identity (first time only)
+
+```bash
+swarm-cli identity create website-publisher
+```
+
+Save the output securely. To export later: `swarm-cli identity export website-publisher`
+
+#### Step 2: Upload to feed
+
+```bash
+swarm-cli feed upload ./website \
+  --identity website-publisher \
+  --topic-string website \
+  --stamp <BATCH_ID> \
+  --index-document index.html \
+  --error-document 404.html
+```
+
+Save the **manifest hash** from the "Feed Manifest URL" output (the part after `/bzz/`). This is the permanent reference — it never changes.
+
+#### Step 3: Update the site (repeat as needed)
+
+Run the same feed upload command with updated files. Same identity + topic = same manifest URL.
+
+## Method 2: bee-js
+
+### One-time upload
+
+```javascript
+import { Bee } from "@ethersphere/bee-js";
+
+const bee = new Bee("http://localhost:1633");
+const batchId = "<BATCH_ID>";
+
+const result = await bee.uploadFilesFromDirectory(batchId, "./website", {
+  indexDocument: "index.html",
+  errorDocument: "404.html"
+});
+
+console.log("Swarm hash:", result.reference.toHex());
+// Access at: http://localhost:1633/bzz/<SWARM_HASH>/
+```
+
+### Feed-based (recommended)
+
+#### Generate a publisher key (first time only)
+
+```javascript
+const crypto = require('crypto');
+const { PrivateKey } = require('@ethersphere/bee-js');
+
+const hexKey = '0x' + crypto.randomBytes(32).toString('hex');
+const privateKey = new PrivateKey(hexKey);
+
+console.log('Private key:', privateKey.toHex());
+console.log('Public address:', privateKey.publicKey().address().toHex());
+```
+
+Store the private key securely. Use a separate key per feed.
+
+#### Upload website + create feed
+
+```javascript
+import { Bee, Topic, PrivateKey } from "@ethersphere/bee-js";
+
+const bee = new Bee("http://localhost:1633");
+const batchId = "<BATCH_ID>";
+const privateKey = new PrivateKey("<PUBLISHER_KEY>");
+const owner = privateKey.publicKey().address();
+
+const topic = Topic.fromString("website");
+const writer = bee.makeFeedWriter(topic, privateKey);
+
+// Upload website files
+const upload = await bee.uploadFilesFromDirectory(batchId, "./website", {
+  indexDocument: "index.html",
+  errorDocument: "404.html"
+});
+console.log("Website Swarm Hash:", upload.reference.toHex());
+
+// Point feed to the upload
+await writer.uploadReference(batchId, upload.reference);
+
+// Create feed manifest (use this hash for ENS)
+const manifestRef = await bee.createFeedManifest(batchId, topic, owner);
+console.log("Feed Manifest:", manifestRef.toHex());
+```
+
+#### Update the site
+
+```javascript
+// Upload new version
+const newUpload = await bee.uploadFilesFromDirectory(batchId, "./website", {
+  indexDocument: "index.html",
+  errorDocument: "404.html"
+});
+
+// Update feed — manifest hash stays the same
+await writer.uploadReference(batchId, newUpload.reference);
+```
+
+## Connect to ENS Domain (optional)
+
+After uploading, ask: "Do you want to connect this to an ENS domain?"
+
+If yes:
+
+1. Go to app.ens.domains → open your domain → Records tab
+2. Add Content Hash with value: `bzz://<MANIFEST_HASH>`
+3. Confirm the transaction
+
+Once registered, the site is accessible at:
+- `https://yourname.eth.limo/`
+- `https://yourname.bzz.link/`
+- `http://localhost:1633/bzz/yourname.eth/`
+
+**Use the feed manifest hash** (not the website hash) so future updates don't require ENS changes.
+
+### ENS localhost note
+
+Some RPC endpoints don't resolve ENS on localhost. Working alternatives:
+- `https://mainnet.infura.io/v3/<your-key>`
+- `https://eth-mainnet.public.blastapi.io`
+- Your own Ethereum node
+
+## Reference
+
+- Full guide: https://docs.ethswarm.org/docs/develop/host-your-website/
+- ENS setup: https://support.ens.domains
+- bee-js docs: https://bee-js.ethswarm.org/docs/
+- swarm-cli: https://github.com/ethersphere/swarm-cli
