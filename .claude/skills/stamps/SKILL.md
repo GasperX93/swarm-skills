@@ -244,6 +244,10 @@ Returns `isRetrievable: true/false`. If false and content is pinned locally:
 curl -X PUT "http://localhost:1633/stewardship/<reference>"
 ```
 
+## Conceptual Questions
+
+For any conceptual or technical question not covered by the steps above, invoke `/docs` to find the relevant authoritative source rather than answering from prior knowledge.
+
 ## Reference
 
 - Stamp batches: https://docs.ethswarm.org/docs/develop/tools-and-features/buy-a-stamp-batch
