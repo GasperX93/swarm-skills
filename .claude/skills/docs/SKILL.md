@@ -176,13 +176,13 @@ Do not attempt to summarize or paraphrase the documentation content. The goal is
 - Connect site to ENS domain: https://docs.ethswarm.org/docs/develop/host-your-website/#connect-site-to-ens-domain
 
 ### Access control (ACT)
-- ACT upload, download, and grantee management (swarm-cli): https://docs.ethswarm.org/docs/develop/access-the-swarm/access-control
-- Uploading with ACT encryption: https://docs.ethswarm.org/docs/develop/access-the-swarm/access-control#upload
-- Downloading ACT-encrypted content: https://docs.ethswarm.org/docs/develop/access-the-swarm/access-control#download
-- Grantee management overview: https://docs.ethswarm.org/docs/develop/access-the-swarm/access-control#grantee-management
-- Creating a grantee list: https://docs.ethswarm.org/docs/develop/access-the-swarm/access-control#create
-- Adding or revoking grantees: https://docs.ethswarm.org/docs/develop/access-the-swarm/access-control#patch
-- Viewing the grantee list: https://docs.ethswarm.org/docs/develop/access-the-swarm/access-control#get
+- ACT overview, upload, download, and grantee management: https://docs.ethswarm.org/docs/develop/act
+- Uploading with ACT encryption: https://docs.ethswarm.org/docs/develop/act#upload
+- Downloading ACT-encrypted content: https://docs.ethswarm.org/docs/develop/act#download
+- Grantee management overview: https://docs.ethswarm.org/docs/develop/act#grantee-management
+- Creating a grantee list: https://docs.ethswarm.org/docs/develop/act#create
+- Adding or revoking grantees: https://docs.ethswarm.org/docs/develop/act#patch
+- Viewing the grantee list: https://docs.ethswarm.org/docs/develop/act#get
 - ACT with bee-js (full guide): https://bee-js.ethswarm.org/docs/act
 - Creating a grantee list with bee-js: https://bee-js.ethswarm.org/docs/act#create-grantees-list
 - Updating grantees with bee-js: https://bee-js.ethswarm.org/docs/act#update-grantees-list
