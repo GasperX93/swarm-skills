@@ -93,6 +93,12 @@ Do not attempt to summarize or paraphrase the documentation content. The goal is
 - Getting your private key from keystore: https://docs.ethswarm.org/docs/bee/working-with-bee/backups#get-private-key-from-keystore-and-password
 - Restoring from backup: https://docs.ethswarm.org/docs/bee/working-with-bee/backups#restore-from-backup
 
+### Cashing out (full nodes only)
+- Cashing out overview: https://docs.ethswarm.org/docs/bee/working-with-bee/cashing-out
+- Withdrawing xBZZ rewards and native xDAI: https://docs.ethswarm.org/docs/bee/working-with-bee/cashing-out#withdrawing-xbzz-rewards-and-native-xdai
+- Cashing out SWAP cheques: https://docs.ethswarm.org/docs/bee/working-with-bee/cashing-out#cashing-out-cheques-swap
+- Managing uncashed cheques: https://docs.ethswarm.org/docs/bee/working-with-bee/cashing-out#managing-uncashed-cheques
+
 ### Staking (full nodes only)
 - Staking overview: https://docs.ethswarm.org/docs/bee/working-with-bee/staking#staking-overview
 - Staking quickstart guide: https://docs.ethswarm.org/docs/bee/working-with-bee/staking#quickstart-guide
@@ -233,6 +239,20 @@ Do not attempt to summarize or paraphrase the documentation content. The goal is
 - isReferenceRetrievable: https://bee-js.ethswarm.org/docs/api/classes/Bee#isreferenceretrievable
 - getStake / depositStake: https://bee-js.ethswarm.org/docs/api/classes/Bee#getstake
 - getRedistributionState: https://bee-js.ethswarm.org/docs/api/classes/Bee#getredistributionstate
+
+### Swarm Desktop app
+- Desktop app introduction: https://docs.ethswarm.org/docs/desktop/introduction
+- Installing Swarm Desktop: https://docs.ethswarm.org/docs/desktop/install#download-and-install-swarm-desktop
+- Tour of the Desktop UI: https://docs.ethswarm.org/docs/desktop/install#tour-of-swarm-desktop
+- Ultra-light vs light node in Desktop: https://docs.ethswarm.org/docs/desktop/install#ultra-light-and-light-nodes
+- Files tab (upload/download via UI): https://docs.ethswarm.org/docs/desktop/install#files-tab
+- Account tab (wallet and stamps): https://docs.ethswarm.org/docs/desktop/install#account-tab
+- Settings tab: https://docs.ethswarm.org/docs/desktop/install#settings-tab
+- Status tab (node health): https://docs.ethswarm.org/docs/desktop/install#status-tab
+
+### bee-js SDK — SOC (Single Owner Chunks)
+- makeSOCReader (read raw SOC): https://bee-js.ethswarm.org/docs/api/classes/Bee#makesocreader
+- makeSOCWriter (write raw SOC): https://bee-js.ethswarm.org/docs/api/classes/Bee#makesocwriter
 
 ### Swarm fundamentals
 - Main documentation hub: https://docs.ethswarm.org
