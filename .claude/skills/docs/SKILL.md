@@ -14,7 +14,7 @@ Use this skill when a developer asks a conceptual or technical question that is 
 2. Identify the topic from the user's question.
 3. Find the most relevant page(s) from the Official Sources map below.
 4. Fetch each relevant page and read the content.
-5. Write a concise summary answer based on what you read — not from prior training knowledge.
+5. Write a concise summary answer based on what you read — not from prior training knowledge. Structure the answer in sections. Prefix each section heading with the appropriate source symbol to indicate where that section's information came from — ✅ if it came from an official source, ⚠️ if it came from an unofficial source.
 6. Cite each source used in a "Sources:" section formatted exactly as:
    ```
    Sources:
