@@ -13,13 +13,14 @@ Use this skill when a developer asks a conceptual or technical question that is 
 1. **Announce** that you are looking up the answer in the official documentation.
 2. Identify the topic from the user's question.
 3. Find the most relevant page(s) from the Official Sources map below.
-4. Fetch each relevant page and scan its headings to find the specific section that best answers the question.
-5. Share the direct link(s) with the appropriate source symbol (see key below).
-6. If multiple topics apply, repeat for each.
-7. If the official sources do not fully answer the question, search the web for additional sources, fetch them, and cite them with the appropriate symbol.
-8. Always include the source key at the end of your response.
+4. Fetch each relevant page and read the content.
+5. Write a concise summary answer based on what you read — not from prior training knowledge.
+6. Cite each source used with its symbol and a direct link to the most specific section found (page URL + anchor if available).
+7. If multiple topics apply, repeat for each.
+8. If the official sources do not fully answer the question, search the web for additional sources, fetch them, summarize what they say, and cite them with the appropriate symbol.
+9. Always include the source key at the end of your response.
 
-Do not answer from prior training knowledge. Do not summarize or paraphrase documentation content. The goal is to cite the authoritative source and let the user read it directly.
+Do not answer from prior training knowledge. After fetching the relevant pages, provide a concise summary answer drawn directly from the content you fetched — not from prior training. Then cite the sources used.
 
 ## Source Key
 
