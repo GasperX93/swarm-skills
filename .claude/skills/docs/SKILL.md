@@ -15,7 +15,13 @@ Use this skill when a developer asks a conceptual or technical question that is 
 3. Find the most relevant page(s) from the Official Sources map below.
 4. Fetch each relevant page and read the content.
 5. Write a concise summary answer based on what you read — not from prior training knowledge.
-6. Cite each source used with its symbol and a direct link to the most specific section found (page URL + anchor if available).
+6. Cite each source used in a "Sources:" section formatted exactly as:
+   ```
+   Sources:
+   ✅ https://example.com/page#anchor
+   ⚠️ https://example.com/other
+   ```
+   Use the direct link to the most specific section found (page URL + anchor if available). Do not use markdown link syntax — show the URL plainly.
 7. If multiple topics apply, repeat for each.
 8. If the official sources do not fully answer the question, search the web for additional sources, fetch them, summarize what they say, and cite them with the appropriate symbol.
 9. Always include the source key at the end of your response.
