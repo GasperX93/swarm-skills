@@ -6,20 +6,27 @@ user-invocable: true
 
 # Swarm Documentation Reference
 
-Use this skill when a developer asks a conceptual or technical question that is not explicitly covered by the steps in another skill. Do not answer from prior training knowledge — find the relevant page from the map below, fetch it, locate the most specific section that answers the question, and share that direct link.
+Use this skill when a developer asks a conceptual or technical question that is not explicitly covered by the steps in another skill. Do not answer from prior training knowledge — find the relevant page, fetch it, locate the most specific section, and cite it.
 
 ## What to Do
 
-1. Identify the topic from the user's question.
-2. Find the most relevant page from the map below.
-3. Fetch that page and scan its headings to find the specific section that best answers the question.
-4. Share the direct link to that section (page URL + anchor if found).
-5. If multiple topics apply, repeat for each.
-6. If no page matches, direct the user to https://docs.ethswarm.org to search there.
+1. **Announce** that you are looking up the answer in the official documentation.
+2. Identify the topic from the user's question.
+3. Find the most relevant page(s) from the Official Sources map below.
+4. Fetch each relevant page and scan its headings to find the specific section that best answers the question.
+5. Share the direct link(s) with the appropriate source symbol (see key below).
+6. If multiple topics apply, repeat for each.
+7. If the official sources do not fully answer the question, search the web for additional sources, fetch them, and cite them with the appropriate symbol.
+8. Always include the source key at the end of your response.
 
-Do not answer from prior training knowledge. Do not summarize or paraphrase documentation content. The goal is to get the user to the authoritative source.
+Do not answer from prior training knowledge. Do not summarize or paraphrase documentation content. The goal is to cite the authoritative source and let the user read it directly.
 
-## Documentation Map
+## Source Key
+
+✅ **Official source** — maintained by the Ethswarm team (docs.ethswarm.org, bee-js.ethswarm.org, github.com/ethersphere/*)
+⚠️ **Unofficial source** — community content, third-party blogs, or external references. May be outdated or inaccurate — verify against official sources.
+
+## Official Sources
 
 ### Node installation and setup
 - https://docs.ethswarm.org/docs/bee/installation/quick-start
