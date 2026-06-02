@@ -42,7 +42,36 @@ Use this tag in the install command below (replace TAG value).
 - curl or wget
 - ~0.01 xDAI + ~0.2 xBZZ on Gnosis Chain (for upgrading to light node)
 
+## Step 0: Install System Prerequisites
+
+A fresh machine usually has none of `curl`, `node`, or `npm`. Check first, then install only what's missing:
+
+```bash
+curl --version; node --version; npm --version
+```
+
+**Ubuntu / Debian:**
+
+```bash
+sudo apt-get update
+sudo apt-get install -y curl
+# Node.js 20 (recommended) via NodeSource:
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+# (or, for the distro's older Node 18 + npm: sudo apt-get install -y nodejs npm)
+```
+
+**macOS (Homebrew):**
+
+```bash
+brew install curl node
+```
+
+Re-run the check above and confirm `node --version` is v18 or higher before continuing.
+
 ## Step 1: Install Bee
+
+The latest Bee release is **v2.8.0**. Fetch the current tag (see "Before Starting") or use it directly:
 
 ```bash
 curl -s https://raw.githubusercontent.com/ethersphere/bee/master/install.sh | TAG=<LATEST_TAG> bash
@@ -54,13 +83,20 @@ Or with wget:
 wget -q -O - https://raw.githubusercontent.com/ethersphere/bee/master/install.sh | TAG=<LATEST_TAG> bash
 ```
 
+> **Non-root Linux users:** the script installs to system paths and fails with "Failed to install bee" without root. Run it through `sudo` while preserving the `TAG` variable:
+> ```bash
+> curl -s https://raw.githubusercontent.com/ethersphere/bee/master/install.sh | sudo env TAG=<LATEST_TAG> bash
+> ```
+
 Verify: `bee version`
 
-Install swarm-cli:
+Install swarm-cli (v3.x, which bundles bee-js 12.x):
 
 ```bash
 npm install -g @ethersphere/swarm-cli
 ```
+
+> **Version note:** Run the latest Bee — **2.8.x**. 2.8 was a breaking change, so **do not run 2.7.x**. This guide targets Bee **2.8.0**, swarm-cli **3.x**, and bee-js **12.x**. bee-js 12.x hasn't yet bumped its tested-version constant past Bee **2.7.0**, so `bee.isSupportedExactVersion()` returns `false` against a 2.8.0 node — that's a cosmetic version-*string* lag in bee-js, not a real incompatibility. bee-js prints **no** warning, and `bee.isSupportedApiVersion()` returns `true` (the HTTP API is compatible), so everything works normally. Inspect the exact numbers with `bee.getVersions()` if needed.
 
 ## Step 2: Start in Ultra-Light Mode
 
@@ -77,6 +113,8 @@ Verify it's running:
 ```bash
 curl -s http://localhost:1633/status | jq
 ```
+
+> **Note:** Right after `bee start`, the API may return HTTP **503 "Node is syncing"** for up to ~30 seconds while it initializes. This is normal — wait and retry; it does not mean the node failed.
 
 ## Step 3: Fund Your Node
 
@@ -101,6 +139,11 @@ swarm-cli utility redeem <GIFT_CODE_PRIVATE_KEY>
 ```
 
 This transfers xBZZ and xDAI from the gift wallet to the Bee node wallet automatically. The node's wallet address is detected from the running Bee node.
+
+> **If redeem fails with "Upstream error: 429"**, the default RPC is rate-limited. Point swarm-cli at a different Gnosis RPC:
+> ```bash
+> swarm-cli utility redeem <GIFT_CODE_PRIVATE_KEY> --json-rpc-url https://rpc.gnosischain.com
+> ```
 
 To redeem to a specific wallet instead:
 
@@ -128,43 +171,71 @@ bee start \
   --blockchain-rpc-endpoint https://xdai.fairdatasociety.org
 ```
 
+> **If the node shuts down immediately with "Upstream error: 429"**, the default RPC (`xdai.fairdatasociety.org`) is rate-limited and Bee does not retry — it exits on the first 429. Restart with a fallback endpoint:
+> ```bash
+> bee start ... --blockchain-rpc-endpoint https://rpc.gnosischain.com
+> ```
+> The FDS endpoint is an archive node (better for initial batch-data sync), so prefer it when it's reachable and only fall back to `rpc.gnosischain.com` when you hit 429s.
+
 The node deploys a chequebook and syncs chain data (~5 minutes). Monitor:
 
 ```bash
 swarm-cli status
 ```
 
-When "Chainsync" shows synchronized, your node is ready.
+`swarm-cli status` does **not** print the word "synchronized" — instead the Chainsync section shows the current vs. latest block and their gap:
+
+```
+Chainsync
+Block: 45,299,125 / 45,299,131 (Δ 6)
+```
+
+When the gap (**Δ**) is small — roughly **Δ < 10** — the node is caught up and ready.
 
 ## Step 5: Buy a Postage Stamp
 
-Required before any upload.
+Required before any upload. **Depth** sets capacity, **amount** sets duration.
+
+> **Budget check first.** Cost in xBZZ ≈ `amount × 2^depth ÷ 10^16`. A depth-22, 3-month stamp costs **~4.2 xBZZ** — but a standard gift code only provides **~0.5 xBZZ**, so the old `--depth 22` suggestion fails with "You do not have enough BZZ". With a single gift code you can realistically only afford a small (depth-17, ~40 KB) stamp. Buy what your balance covers, or fund more xBZZ first (see Step 3).
+
+### Compute the amount from the live price
+
+The amount-per-day depends on the current network storage price, so don't hardcode it — read it live:
 
 ```bash
-swarm-cli stamp buy --depth 22 --amount 120159417615
+PRICE=$(curl -s http://localhost:1633/chainstate | jq .currentPrice)
+# amount = currentPrice * 17280 (blocks/day) * desired_days
+echo $((PRICE * 17280 * 30))   # ≈ amount for 30 days
+```
+
+### Budget-friendly stamp (fits a ~0.5 xBZZ gift code)
+
+```bash
+swarm-cli stamp buy --depth 17 --amount 9345732487    # ~40 KB, ~1 week, ~0.12 xBZZ
 ```
 
 Or via API:
 
 ```bash
-curl -X POST http://localhost:1633/stamps/120159417615/22
+curl -X POST http://localhost:1633/stamps/9345732487/17
 ```
 
 Save the **Stamp ID** returned.
 
 ### Stamp sizing
 
-These are **effective (realistic) capacities** — not theoretical maximums:
+These are **effective (realistic) capacities** — not theoretical maximums (verify with `Utils.getStampEffectiveBytes(depth)` in bee-js 12.x):
 
-| Depth | Effective capacity | | Duration | Amount |
+| Depth | Effective capacity | | Duration | Amount (approx, varies with price) |
 |-------|-------------------|-|----------|--------|
-| 17 | ~7 MB | | 1 day | 1335104641 |
-| 19 | ~110 MB | | 1 week | 9345732487 |
-| 20 | ~680 MB | | 1 month | 40053139205 |
-| 21 | ~2.6 GB | | 3 months | 120159417615 |
-| 22 | ~7.7 GB | | 1 year | 480637670460 |
+| 17 | ~40 KB | | 1 week | ~9,345,732,487 |
+| 18 | ~6 MB | | 1 month | ~40,053,139,205 |
+| 19 | ~110 MB | | 3 months | ~120,159,417,615 |
+| 20 | ~680 MB | | 6 months | ~240,318,835,230 |
+| 21 | ~2.6 GB | | 1 year | ~480,637,670,460 |
+| 22 | ~7.7 GB | | | |
 
-Formula: `amount = 1335104641 * desired_days`. For capacity, see `/stamps` for the full sizing guide.
+The amounts above are upper-bound estimates from a higher historical price and can overpay by ~40%. Always compute from the live `currentPrice` (above). For the full sizing/cost guide, see `/stamps`.
 
 ### Manage stamps later
 

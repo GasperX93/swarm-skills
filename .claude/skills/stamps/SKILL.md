@@ -48,12 +48,18 @@ These are **effective (realistic) capacities** — not theoretical maximums. Act
 
 ### Size options
 
+Effective capacities (verify with `Utils.getStampEffectiveBytes(depth)`):
+
 | Size | Depth |
 |------|-------|
+| ~40 KB | 17 |
+| ~6 MB | 18 |
 | 110 MB | 19 |
 | 680 MB | 20 |
 | 2.6 GB | 21 |
 | 7.7 GB | 22 |
+
+> **Low depths are tiny:** depth 17 holds only ~40 KB (not ~7 MB — that figure is actually depth 18). Below depth 19, effective capacity is a small fraction of the `2^depth × 4KB` theoretical size because chunks spread unevenly across 2^16 buckets.
 
 ### Duration options
 
@@ -75,17 +81,22 @@ amount = currentPrice * 17280 * days
 
 Where `17280` = blocks per day (5-second blocks on Gnosis Chain).
 
-**Quick reference** (approximate, varies with network price):
+**Quick reference** — these are **upper-bound estimates** based on a higher historical price (~77,261 PLUR/chunk/block) and can overpay by ~40% versus the current price. Treat them as ceilings and always compute from the live `currentPrice` above:
 
-| Duration | Amount (approximate) |
+| Duration | Amount (upper-bound estimate) |
 |----------|---------------------|
-| 15 days | 20,026,569,615 |
-| 1 month | 40,053,139,205 |
-| 3 months | 120,159,417,615 |
-| 6 months | 240,318,835,230 |
-| 1 year | 480,637,670,460 |
+| 15 days | ~20,026,569,615 |
+| 1 month | ~40,053,139,205 |
+| 3 months | ~120,159,417,615 |
+| 6 months | ~240,318,835,230 |
+| 1 year | ~480,637,670,460 |
 
-Formula shortcut: `amount ≈ 1,335,104,641 * desired_days`
+To compute the actual amount from the live price:
+
+```bash
+PRICE=$(curl -s http://localhost:1633/chainstate | jq .currentPrice)
+echo $((PRICE * 17280 * 30))   # amount for 30 days
+```
 
 **Minimum amount** must cover 24 hours of storage.
 
@@ -100,7 +111,7 @@ Formula shortcut: `amount ≈ 1,335,104,641 * desired_days`
    curl -s http://localhost:1633/wallet | jq '{bzzBalance, nativeTokenBalance}'
    ```
 
-2. Calculate cost using bee-js utility or this formula:
+2. Calculate cost with `Utils.getStampCost(depth, amount)` (returns a BZZ object), or this formula:
    ```
    cost in PLUR = amount * (2 ^ depth)
    cost in BZZ  = cost in PLUR / 10^16
@@ -158,17 +169,21 @@ const batchId = await bee.createPostageBatch('120159417615', 22)
 
 ## bee-js Utility Functions
 
+All stamp helpers live under the `Utils` namespace in bee-js 12.x — they are **not** top-level exports. (Several were renamed from earlier versions; the old names below no longer exist.)
+
 ```javascript
-import {
-  getDepthForCapacity,          // bytes → depth
-  getAmountForTtl,              // seconds → amount
-  getStampCost,                 // depth + amount → cost in BZZ
-  getStampTtlSeconds,           // amount → TTL in seconds
-  getStampUsage,                // check how full a stamp is
-  getStampEffectiveBytes,       // depth → effective storable bytes
-  getStampMaximumCapacityBytes  // depth → max theoretical bytes
-} from '@ethersphere/bee-js'
+import { Utils, Size, Duration } from '@ethersphere/bee-js'
+
+Utils.getDepthForSize(Size.fromMegabytes(100))        // Size → minimum depth (was getDepthForCapacity)
+Utils.getStampEffectiveBytes(depth)                   // depth → effective storable bytes
+Utils.getStampTheoreticalBytes(depth)                 // depth → max theoretical bytes (was getStampMaximumCapacityBytes)
+Utils.getStampCost(depth, amount)                     // depth + amount → cost (BZZ object)
+Utils.getStampUsage(utilization, depth, bucketDepth)  // how full a stamp is
+Utils.getStampDuration(amount, pricePerBlock, blockTime)   // amount → Duration (was getStampTtlSeconds)
+Utils.getAmountForDuration(Duration.fromDays(30), pricePerBlock, blockTime)  // Duration → amount (was getAmountForTtl)
 ```
+
+`pricePerBlock` is the network's `currentPrice` (from `GET /chainstate`); `blockTime` is `5` seconds on Gnosis Chain.
 
 ## Manage Stamps
 

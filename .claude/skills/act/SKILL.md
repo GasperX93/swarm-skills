@@ -139,7 +139,10 @@ const result = await bee.uploadFile(batchId, 'Secret data', 'secret.txt', {
 })
 
 console.log('Encrypted reference:', result.reference.toHex())
-console.log('History address:', result.historyAddress.toHex())
+
+// historyAddress is an Optional<Reference> in bee-js 12.x — unwrap it before use.
+const historyRef = result.historyAddress.getOrThrow()   // or: result.historyAddress.value
+console.log('History address:', historyRef.toHex())
 // WARNING: Save both — losing the history address means permanent loss of access to encrypted data
 ```
 
@@ -150,14 +153,20 @@ import { Bee } from '@ethersphere/bee-js'
 
 const bee = new Bee('http://localhost:1633')
 
+// The publisher key is the uploader's public key — get it as a PublicKey object and
+// pass it directly (do not stringify it). historyRef is the unwrapped Reference from upload.
+const { publicKey } = await bee.getNodeAddresses()
+
 const file = await bee.downloadFile(reference, 'secret.txt', {
-  actHistoryAddress: historyAddress,
-  actPublisher: publisherPublicKey
+  actHistoryAddress: historyRef,   // Reference (unwrapped from result.historyAddress)
+  actPublisher: publicKey          // PublicKey object from getNodeAddresses()
 })
 
 console.log('Decrypted:', file.data.toUtf8())
 // Without ACT parameters, this returns "not found"
 ```
+
+> **swarm-cli quirk:** in testing, `swarm-cli download <ref> --act --act-history-address <hist> --act-publisher <pk>` can return 404 even with correct values, while the equivalent Bee HTTP API call (same headers) returns 200. If the CLI download fails, retry via the API or bee-js.
 
 ### Manage grantees
 

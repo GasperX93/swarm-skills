@@ -4,7 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Purpose
 
-This is the **swarm-skills** repo — AI-powered interactive guides that help developers build on the Swarm decentralized storage network. Currently packaged as Claude Code skills, with support for other AI coding tools (Cursor, GitHub Copilot, Windsurf, Codex) planned. There is no application code, no build system, and no tests. The repo contains only skill definitions (markdown files).
+This is the **swarm-skills** repo — AI-powered interactive guides that help developers build on the Swarm decentralized storage network. Currently packaged as Claude Code skills, with support for other AI coding tools (Cursor, GitHub Copilot, Windsurf, Codex) planned. There is no application code or build system. The repo is almost entirely skill definitions (markdown files); the one exception is `scripts/verify-beejs.mjs`, which asserts the bee-js / Bee API facts the skills depend on.
+
+### Verifying skills against the latest bee-js
+
+After bumping the documented bee-js version (or to catch upstream API drift), run:
+
+```bash
+npm i @ethersphere/bee-js@12 && node scripts/verify-beejs.mjs
+```
+
+It exits non-zero if any documented fact (Utils helper names, capacity numbers, ACT/messaging types) no longer holds.
 
 ## Structure
 
@@ -31,7 +41,8 @@ Skills live in `.claude/skills/`. Each skill is a directory containing a `SKILL.
 - When referencing other skills, use the `/skill-name` format.
 - Code examples should cover both **bee-js** and **swarm-cli** where applicable.
 - Keep commands and code up to date with the latest Bee and bee-js versions.
-- Skills last verified against: **bee-js 8.x**, **swarm-cli 2.x**, **Bee 2.x**
+- Skills last verified against: **Bee 2.8.0**, **bee-js 12.x**, **swarm-cli 3.x**
+- Note: run the latest Bee (**2.8.x**) — 2.8 was a breaking change, **do not downgrade to 2.7.x**. bee-js 12.x hasn't yet bumped its tested-version constant past Bee 2.7.0, so `bee.isSupportedExactVersion()` returns `false` against a 2.8.0 node — a cosmetic version-string lag in bee-js, not a real incompatibility. bee-js prints no warning and `bee.isSupportedApiVersion()` returns `true` (HTTP API compatible), so it works normally. Verified live against Bee 2.8.0 / API 7.4.1. All stamp helpers (`getStampCost`, `getStampEffectiveBytes`, `getDepthForSize`, `getAmountForDuration`, `getStampDuration`, `getStampTheoreticalBytes`, `getStampUsage`) live under the `Utils` namespace, not as top-level exports.
 
 ## Swarm Quick Reference
 
