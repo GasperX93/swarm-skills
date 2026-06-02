@@ -42,7 +42,7 @@ Skills live in `.claude/skills/`. Each skill is a directory containing a `SKILL.
 - Code examples should cover both **bee-js** and **swarm-cli** where applicable.
 - Keep commands and code up to date with the latest Bee and bee-js versions.
 - Skills last verified against: **Bee 2.8.0**, **bee-js 12.x**, **swarm-cli 3.x**
-- Note: bee-js 12.x is tested against Bee **2.7.0**, so `bee.isSupportedExactVersion()` returns `false` against a 2.8.0 node. This is only a version-string difference — bee-js prints no warning and `bee.isSupportedApiVersion()` returns `true` (HTTP API compatible), so it works normally. Verified live against Bee 2.8.0 / API 7.4.1. All stamp helpers (`getStampCost`, `getStampEffectiveBytes`, `getDepthForSize`, `getAmountForDuration`, `getStampDuration`, `getStampTheoreticalBytes`, `getStampUsage`) live under the `Utils` namespace, not as top-level exports.
+- Note: run the latest Bee (**2.8.x**) — 2.8 was a breaking change, **do not downgrade to 2.7.x**. bee-js 12.x hasn't yet bumped its tested-version constant past Bee 2.7.0, so `bee.isSupportedExactVersion()` returns `false` against a 2.8.0 node — a cosmetic version-string lag in bee-js, not a real incompatibility. bee-js prints no warning and `bee.isSupportedApiVersion()` returns `true` (HTTP API compatible), so it works normally. Verified live against Bee 2.8.0 / API 7.4.1. All stamp helpers (`getStampCost`, `getStampEffectiveBytes`, `getDepthForSize`, `getAmountForDuration`, `getStampDuration`, `getStampTheoreticalBytes`, `getStampUsage`) live under the `Utils` namespace, not as top-level exports.
 
 ## Swarm Quick Reference
 

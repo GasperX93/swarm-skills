@@ -96,7 +96,7 @@ Install swarm-cli (v3.x, which bundles bee-js 12.x):
 npm install -g @ethersphere/swarm-cli
 ```
 
-> **Version note:** This guide targets Bee **2.8.0**, swarm-cli **3.x**, and bee-js **12.x**. bee-js 12.x is officially tested against Bee **2.7.0**, so `bee.isSupportedExactVersion()` returns `false` against a 2.8.0 node — but that's only a version-*string* difference. bee-js does **not** print any warning, and `bee.isSupportedApiVersion()` returns `true` (the HTTP API is compatible), so everything works normally. Use `bee.getVersions()` to inspect the exact numbers; run Bee 2.7.x only if you specifically need an exact-version match.
+> **Version note:** Run the latest Bee — **2.8.x**. 2.8 was a breaking change, so **do not run 2.7.x**. This guide targets Bee **2.8.0**, swarm-cli **3.x**, and bee-js **12.x**. bee-js 12.x hasn't yet bumped its tested-version constant past Bee **2.7.0**, so `bee.isSupportedExactVersion()` returns `false` against a 2.8.0 node — that's a cosmetic version-*string* lag in bee-js, not a real incompatibility. bee-js prints **no** warning, and `bee.isSupportedApiVersion()` returns `true` (the HTTP API is compatible), so everything works normally. Inspect the exact numbers with `bee.getVersions()` if needed.
 
 ## Step 2: Start in Ultra-Light Mode
 
