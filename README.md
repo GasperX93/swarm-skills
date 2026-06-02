@@ -105,12 +105,22 @@ Swarm is a decentralized peer-to-peer storage network and part of the Ethereum e
 
 ## Contributing
 
-Skills are standalone markdown files (currently in `.claude/skills/` for Claude Code). To edit or add a skill:
+Skills are markdown files (currently in `.claude/skills/` for Claude Code). To edit or add a skill:
 
-1. Skills should be self-contained — include everything needed for that topic.
+1. Skills should be self-contained as a skill folder — a `SKILL.md` with everything needed for that topic, plus an optional `REFERENCE.md` for deeper or less-common detail that's loaded on demand (see `.claude/skills/stamps/`).
 2. Always check prerequisites and route to the right skill if something is missing.
 3. Cover both bee-js and swarm-cli where applicable.
 4. Reference other skills using `/skill-name` format.
+
+### Verifying skills against bee-js
+
+When you change bee-js API usage or bump the supported version, run the verification script to catch drift before it lands in a skill:
+
+```bash
+npm i @ethersphere/bee-js@12 && node scripts/verify-beejs.mjs
+```
+
+It asserts the `Utils` stamp-helper names, capacity numbers, and ACT/messaging types the skills rely on, and exits non-zero on any mismatch.
 
 ## License
 
