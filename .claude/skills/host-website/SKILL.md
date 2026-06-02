@@ -10,21 +10,19 @@ Guide a developer through hosting a static website on Swarm. Ask which method th
 
 ## Before Starting (run immediately)
 
-**Run these checks now — do not just show the commands to the user:**
+Run these checks now and **narrate each one in a short line** — say what you're checking, run it (don't paste the command), then report the result. Don't pause for confirmation; these are read-only checks.
 
-1. Node running?
+1. **Say "Checking your Bee node…"**, then run:
    ```bash
    curl -s http://localhost:1633/status | jq .beeMode
    ```
-   If this fails → route to `/setup-bee`
+   Reachable → "✓ Node is up (light mode)." | Fails → "✗ No Bee node running." and route to `/setup-bee`.
 
-2. Stamp available?
+2. **Say "Checking for a usable postage stamp…"**, then run:
    ```bash
    curl -s http://localhost:1633/stamps | jq '.stamps[] | select(.usable==true) | {batchID, depth, batchTTL}'
    ```
-   If no usable stamps → route to `/stamps`
-
-Present results briefly, then proceed.
+   Found → "✓ Found a usable stamp." and proceed. | None → "✗ No usable stamp." and route to `/stamps`.
 
 ## Prerequisites
 
