@@ -4,7 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Purpose
 
-This is the **swarm-skills** repo — AI-powered interactive guides that help developers build on the Swarm decentralized storage network. Currently packaged as Claude Code skills, with support for other AI coding tools (Cursor, GitHub Copilot, Windsurf, Codex) planned. There is no application code, no build system, and no tests. The repo contains only skill definitions (markdown files).
+This is the **swarm-skills** repo — AI-powered interactive guides that help developers build on the Swarm decentralized storage network. Currently packaged as Claude Code skills, with support for other AI coding tools (Cursor, GitHub Copilot, Windsurf, Codex) planned. There is no application code or build system. The repo is almost entirely skill definitions (markdown files); the one exception is `scripts/verify-beejs.mjs`, which asserts the bee-js / Bee API facts the skills depend on.
+
+### Verifying skills against the latest bee-js
+
+After bumping the documented bee-js version (or to catch upstream API drift), run:
+
+```bash
+npm i @ethersphere/bee-js@12 && node scripts/verify-beejs.mjs
+```
+
+It exits non-zero if any documented fact (Utils helper names, capacity numbers, ACT/messaging types) no longer holds.
 
 ## Structure
 
