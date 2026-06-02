@@ -10,9 +10,9 @@ Guide a developer through getting a Bee light node running so they can build on 
 
 ## Before Starting (run immediately)
 
-**Run these checks now — do not just show the commands to the user:**
+Run these checks now and **narrate each one in a short line** — say what you're checking, run it (don't paste the command), then report the result. Don't pause for confirmation; these are read-only checks.
 
-1. Detect platform:
+1. **Say "Detecting your platform…"**, then run:
    ```bash
    uname -s
    ```
@@ -20,12 +20,11 @@ Guide a developer through getting a Bee light node running so they can build on 
    - **Darwin (macOS):** Use the install script (or Homebrew if available)
    - **Other / Windows:** Advise WSL2 first, then the Linux install path
 
-2. Fetch the latest Bee version tag:
+2. **Say "Fetching the latest Bee version…"**, then run:
    ```bash
    curl -s https://api.github.com/repos/ethersphere/bee/releases/latest | jq -r .tag_name
    ```
-
-Use this tag in the install command below (replace TAG value).
+   Report it in one line (e.g. "✓ Latest is v2.8.0.") and use this tag in the install command below (replace TAG value).
 
 ## Node Modes
 

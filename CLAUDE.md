@@ -39,6 +39,7 @@ Skills live in `.claude/skills/`. Each skill is a directory containing a `SKILL.
 - Each skill is standalone — it should contain everything needed for that topic.
 - Skills should always check prerequisites (node running? stamp exists?) and route to the appropriate skill if not.
 - When referencing other skills, use the `/skill-name` format.
+- **Narrate prerequisite checks.** Skills run their prerequisite probes (node status, stamp availability, identities) automatically — never make the user confirm read-only localhost checks. But narrate each probe in one short line so the auto-run commands are legible: before, say what you're checking ("Checking your Bee node…"); after, report the result in a few words with ✓/✗ ("✓ Node is up (light mode)." / "✗ No node running."). Keep lines terse and consistent; narrate then continue — no confirmation gate. (Operations that cost xBZZ — stamp buy/top-up/dilute — still require explicit confirmation; that's separate and unchanged.)
 - Code examples should cover both **bee-js** and **swarm-cli** where applicable.
 - Keep commands and code up to date with the latest Bee and bee-js versions.
 - Skills last verified against: **Bee 2.8.0**, **bee-js 12.x**, **swarm-cli 3.x**

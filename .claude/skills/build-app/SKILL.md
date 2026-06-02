@@ -10,20 +10,20 @@ Guide a developer through scaffolding and building an app that uses Swarm for de
 
 ## Before Starting (run immediately)
 
-**Run these checks now — do not just show the commands to the user:**
+Run these checks now and **narrate each one in a short line** — say what you're checking, run it (don't paste the command), then report the result. Don't pause for confirmation; these are read-only checks.
 
-1. Node running?
+1. **Say "Checking your Bee node…"**, then run:
    ```bash
    curl -s http://localhost:1633/status | jq .beeMode
    ```
-   If this fails → route to `/setup-bee`
+   Reachable → "✓ Node is up (light mode)." | Fails → "✗ No Bee node running." and route to `/setup-bee`.
 
-2. Existing project?
+2. **Say "Checking for an existing project here…"**, then run:
    ```bash
    ls package.json 2>/dev/null && echo "EXISTING_PROJECT" || echo "NEW_PROJECT"
    ```
-   - **If `package.json` exists:** Default to Option B (add bee-js). Ask: "I see you already have a project here. Want me to add bee-js to it, or scaffold a separate Swarm project?"
-   - **If no project:** Default to Option A (scaffold). Ask what type.
+   - **If `package.json` exists:** "✓ Found an existing project." Default to Option B (add bee-js). Ask: "Want me to add bee-js to it, or scaffold a separate Swarm project?"
+   - **If no project:** "✗ No project here yet." Default to Option A (scaffold). Ask what type.
 
 ## What to Ask
 

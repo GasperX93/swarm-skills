@@ -10,13 +10,13 @@ Guide a developer through listing, buying, sizing, topping up, and managing post
 
 ## Step 1: List Existing Stamps (DO THIS FIRST)
 
-**Immediately run this command** before doing anything else — do not just show it to the user:
+**Say "Checking your existing stamps…"**, then run this immediately (don't just show it; don't pause for confirmation — it's a read-only check):
 
 ```bash
 curl -s http://localhost:1633/stamps | jq '.stamps[] | {batchID, depth, usable, batchTTL, immutableFlag}'
 ```
 
-If the command fails (connection refused, etc.), the node is not running — route to `/setup-bee`.
+If the command fails (connection refused, etc.), the node isn't running — say "✗ No Bee node running." and route to `/setup-bee`.
 
 Present the results as a table with: batch ID (shortened), depth, effective capacity, type (mutable/immutable from `immutableFlag`), and approximate TTL in days (batchTTL / 86400).
 
