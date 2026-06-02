@@ -1,6 +1,6 @@
 ---
 name: troubleshoot
-description: Diagnose and fix common Bee node, connectivity, and upload issues
+description: Diagnose and fix common Bee node, connectivity, sync, funding, stamp, and upload/download problems — an ordered triage from 'is the node running?' through peers, chain sync, wallet balance, stamp validity, and Bee API error codes (400/404/422/500/503). Use when something on Swarm is failing, erroring out, or won't connect.
 user-invocable: true
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: feed
-description: Create and use feeds for dynamic content with stable addresses on Swarm
+description: Create and update feeds — a stable Swarm address (owner + topic) that always resolves to the latest content even as the underlying hash changes. Covers feed writers/readers, manifests for permanent URLs, and updates via bee-js or swarm-cli. Use for dynamic or updateable content: websites, blogs, app state, RSS/podcasts, social feeds.
 user-invocable: true
 ---
 

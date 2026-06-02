@@ -1,6 +1,6 @@
 ---
 name: host-website
-description: Deploy a static website to Swarm with optional ENS
+description: Deploy a static website (a folder with index.html) to Swarm via swarm-cli or bee-js, as a one-time upload or an updateable feed, with optional ENS content-hash setup (eth.limo / bzz.link). Use when the user wants to publish, host, or update a site or single-page app on decentralized storage.
 user-invocable: true
 ---
 

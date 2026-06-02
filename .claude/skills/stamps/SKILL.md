@@ -1,6 +1,6 @@
 ---
 name: stamps
-description: List, buy, size, top up, and manage postage stamps for Swarm uploads
+description: List, buy, size, top up, and dilute postage stamps (postage batches) — required before any Swarm upload. Covers depth vs. capacity, amount vs. duration/TTL, mutable vs. immutable, live-price cost estimation, and the bee-js Utils stamp helpers. Use when the user needs a stamp, asks about storage cost/capacity/expiry, or hits a 'no usable stamp' error.
 user-invocable: true
 ---
 
@@ -20,7 +20,7 @@ If the command fails (connection refused, etc.), the node is not running — rou
 
 Present the results as a table with: batch ID (shortened), depth, effective capacity, type (mutable/immutable from `immutableFlag`), and approximate TTL in days (batchTTL / 86400).
 
-If they have a usable stamp with enough capacity and TTL, ask if they want to reuse it instead of buying a new one. They can also top up or dilute an existing stamp (see Manage Stamps below).
+If they have a usable stamp with enough capacity and TTL, ask if they want to reuse it instead of buying a new one. They can also top up or dilute an existing stamp (see [REFERENCE.md](REFERENCE.md)).
 
 ## What to Ask
 
@@ -167,97 +167,17 @@ const batchId = await bee.createPostageBatch('120159417615', 22)
 
 **Important:** Wait several minutes after purchase for the stamp to propagate on the network before using it.
 
-## bee-js Utility Functions
-
-All stamp helpers live under the `Utils` namespace in bee-js 12.x — they are **not** top-level exports. (Several were renamed from earlier versions; the old names below no longer exist.)
-
-```javascript
-import { Utils, Size, Duration } from '@ethersphere/bee-js'
-
-Utils.getDepthForSize(Size.fromMegabytes(100))        // Size → minimum depth (was getDepthForCapacity)
-Utils.getStampEffectiveBytes(depth)                   // depth → effective storable bytes
-Utils.getStampTheoreticalBytes(depth)                 // depth → max theoretical bytes (was getStampMaximumCapacityBytes)
-Utils.getStampCost(depth, amount)                     // depth + amount → cost (BZZ object)
-Utils.getStampUsage(utilization, depth, bucketDepth)  // how full a stamp is
-Utils.getStampDuration(amount, pricePerBlock, blockTime)   // amount → Duration (was getStampTtlSeconds)
-Utils.getAmountForDuration(Duration.fromDays(30), pricePerBlock, blockTime)  // Duration → amount (was getAmountForTtl)
-```
-
-`pricePerBlock` is the network's `currentPrice` (from `GET /chainstate`); `blockTime` is `5` seconds on Gnosis Chain.
-
-## Manage Stamps
-
-### List all stamps
-
-```bash
-swarm-cli stamp list
-```
-
-Or via API:
-
-```bash
-curl -s http://localhost:1633/stamps | jq
-```
-
-### Check a specific stamp
-
-```bash
-swarm-cli stamp show <stamp-id>
-```
-
-### Top up (extend duration)
-
-```bash
-swarm-cli stamp topup --stamp <stamp-id> --amount <additional-amount>
-```
-
-Via API:
-
-```bash
-curl -X PATCH "http://localhost:1633/stamps/topup/<batchID>/<amount>"
-```
-
-Via bee-js:
-
-```javascript
-await bee.topUpBatch(batchId, '40053139205')
-```
-
-### Dilute (increase capacity)
-
-Increase depth to store more data. Dilution alone decreases TTL — combine with topup to maintain duration.
-
-```bash
-swarm-cli stamp dilute --depth <new-depth> --stamp <stamp-id>
-```
-
-Via API:
-
-```bash
-curl -s -X PATCH http://localhost:1633/stamps/dilute/<batchID>/<newDepth>
-```
-
-Via bee-js:
-
-```javascript
-await bee.diluteBatch(batchId, 24)
-```
-
 ## TTL Warning
 
 TTL is estimated based on current storage price, which fluctuates as Swarm adoption changes. Always maintain a buffer for important data. Content with expired stamps cannot be re-uploaded unless pinned locally.
 
-## Check Content Retrievability
+## Managing an Existing Stamp
 
-```bash
-curl "http://localhost:1633/stewardship/<reference>"
-```
+For deeper operations, see **[REFERENCE.md](REFERENCE.md)**:
 
-Returns `isRetrievable: true/false`. If false and content is pinned locally:
-
-```bash
-curl -X PUT "http://localhost:1633/stewardship/<reference>"
-```
+- **bee-js utility functions** — `Utils.getStampCost`, `getStampEffectiveBytes`, `getDepthForSize`, `getAmountForDuration`, etc.
+- **Manage stamps** — list, inspect (`stamp show`), top up (extend duration), dilute (increase capacity)
+- **Check content retrievability** — `/stewardship/<reference>`
 
 ## Reference
 

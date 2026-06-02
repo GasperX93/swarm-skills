@@ -1,6 +1,6 @@
 ---
 name: help
-description: Swarm skills overview and routing to the right skill
+description: Swarm overview and entry point — checks whether a Bee node is running and routes the developer to the right Swarm skill. Use at the start of any Swarm task, when the user is unsure where to begin, or asks what they can build with Swarm, Bee, or bee-js.
 user-invocable: true
 ---
 
