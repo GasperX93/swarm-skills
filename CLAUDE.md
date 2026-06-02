@@ -31,7 +31,8 @@ Skills live in `.claude/skills/`. Each skill is a directory containing a `SKILL.
 - When referencing other skills, use the `/skill-name` format.
 - Code examples should cover both **bee-js** and **swarm-cli** where applicable.
 - Keep commands and code up to date with the latest Bee and bee-js versions.
-- Skills last verified against: **bee-js 8.x**, **swarm-cli 2.x**, **Bee 2.x**
+- Skills last verified against: **Bee 2.8.0**, **bee-js 12.x**, **swarm-cli 3.x**
+- Note: bee-js 12.x declares Bee **2.7.0** as its supported version, so pairing it with a Bee 2.8.0 node prints a non-fatal version-mismatch warning. All stamp helpers (`getStampCost`, `getStampEffectiveBytes`, `getDepthForSize`, `getAmountForDuration`, `getStampDuration`, `getStampTheoreticalBytes`, `getStampUsage`) live under the `Utils` namespace, not as top-level exports.
 
 ## Swarm Quick Reference
 

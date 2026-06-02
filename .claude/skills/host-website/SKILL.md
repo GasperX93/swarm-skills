@@ -58,8 +58,10 @@ Access at: `http://localhost:1633/bzz/<SWARM_HASH>/`
 #### Step 1: Create publisher identity (first time only)
 
 ```bash
-swarm-cli identity create website-publisher
+swarm-cli identity create website-publisher --password <SECURE_PASSWORD>
 ```
+
+Always pass `--password` — without it, `identity create` prompts interactively for a V3 wallet password and blocks non-interactive/agent runs. (Use `--only-keypair` for a fast, cleartext keypair with no password.) The same `--password` is needed later for `swarm-cli feed print` with this identity.
 
 Save the output securely. To export later: `swarm-cli identity export website-publisher`
 

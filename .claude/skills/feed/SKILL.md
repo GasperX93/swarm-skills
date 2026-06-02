@@ -131,8 +131,10 @@ await writer.uploadReference(batchId, newUpload.reference);
 ### Create identity (first time only)
 
 ```bash
-swarm-cli identity create publisher
+swarm-cli identity create publisher --password <SECURE_PASSWORD>
 ```
+
+`identity create` builds a password-protected V3 wallet and **prompts interactively for a password** if you omit `--password` — which blocks non-interactive/agent runs, so always pass `--password`. (Use `--only-keypair` instead for a fast, cleartext keypair with no password.)
 
 Save output securely. Export later with: `swarm-cli identity export publisher`
 
@@ -163,8 +165,11 @@ swarm-cli feed upload ./updated-content \
 ```bash
 swarm-cli feed print \
   --identity publisher \
-  --topic-string my-topic
+  --topic-string my-topic \
+  --password <SECURE_PASSWORD>
 ```
+
+`--password` is required here too when the identity is a password-protected V3 wallet — without it the command prompts interactively and stalls agent runs.
 
 ## Use Cases
 

@@ -68,9 +68,10 @@ If connected peers = 0:
 swarm-cli status
 ```
 
-Watch the "Chainsync" section. If blocks remaining is high, the node is still syncing (~5 minutes typical).
+Watch the "Chainsync" section. It shows current vs. latest block and a gap, e.g. `Block: 45,299,125 / 45,299,131 (Δ 6)` — it never prints "synchronized". A small gap (roughly **Δ < 10**) means the node is caught up. A large/growing gap means it's still syncing (~5 minutes typical) or stuck.
 
 If chain sync is stuck:
+- **RPC rate-limited (429):** the default `https://xdai.fairdatasociety.org` can return HTTP 429 "Too Many Requests"; Bee does not retry and exits on the first 429 at startup. Restart with a fallback: `bee start ... --blockchain-rpc-endpoint https://rpc.gnosischain.com`. For swarm-cli commands, add `--json-rpc-url https://rpc.gnosischain.com`.
 - Check the RPC endpoint is reachable: `curl -s https://xdai.fairdatasociety.org`
 - Try an alternative RPC: `https://rpc.gnosischain.com` or `https://gnosis-rpc.publicnode.com`
 
@@ -192,14 +193,17 @@ swarm-cli status
 
 ## Common Bee API Error Codes
 
+Observed on Bee 2.7.x–2.8.x:
+
 | Code | Meaning | Fix |
 |------|---------|-----|
-| 400 | Bad request (malformed input) | Check request format against API docs |
-| 402 | No usable stamp / insufficient postage | Buy or top up a stamp → `/stamps` |
-| 404 | Content not found | Content may have expired, reference is wrong, or ACT flags missing |
+| 400 | Bad request / missing required header (e.g. no `swarm-postage-batch-id`) → "invalid header params: want required" | Include and correctly format the stamp header and other required params |
+| 404 | Content not found **or** stamp batch not found ("batch with id not found") | Content expired, wrong reference, missing ACT flags, **or** an invalid/unknown stamp ID |
 | 422 | Unprocessable entity | Check parameter types (e.g., batch ID format) |
 | 500 | Internal server error | Check Bee logs, restart node |
-| 503 | Node not ready (still syncing) | Wait for chain sync to complete |
+| 503 | Node not ready (still syncing) | Wait for chain sync to complete (up to ~30s right after start) |
+
+> **Note:** A missing/insufficient stamp does **not** return 402 in current Bee — a missing stamp header returns **400** and an invalid stamp ID returns **404**. (402 may appear on older Bee versions or specific scenarios; treat stamp problems as 400/404.)
 
 ## Security Reminder
 

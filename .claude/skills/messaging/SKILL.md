@@ -72,6 +72,7 @@ const subscription = bee.gsocSubscribe(
   {
     onMessage: message => console.log('Received:', message.toJSON()),
     onError: err => console.error('Error:', err),
+    onClose: () => console.log('Subscription closed'),
   }
 )
 
@@ -121,10 +122,13 @@ import { Bee, Topic } from '@ethersphere/bee-js'
 const bee = new Bee('http://localhost:1633')
 const topic = Topic.fromString('my-topic')
 
-// Continuous subscription
+// Continuous subscription.
+// All three handlers are required in bee-js 12.x — omitting onClose throws
+// "Expected function for onClose, got: undefined".
 bee.pssSubscribe(topic, {
   onMessage: msg => console.log('Received:', msg.toUtf8()),
   onError: err => console.error('Error:', err.message),
+  onClose: () => console.log('Subscription closed'),
 })
 ```
 
