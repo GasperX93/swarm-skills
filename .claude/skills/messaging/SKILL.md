@@ -1,6 +1,6 @@
 ---
 name: messaging
-description: Set up real-time messaging on Swarm using GSOC or PSS
+description: Set up real-time messaging on Swarm with GSOC (many-to-one, e.g. chat or notifications) or PSS (point-to-point, optionally encrypted, offline-capable), via bee-js. Covers mining keys, sending, subscribing, full-node requirements, and mutable-stamp needs. Use for chat, notifications, webhooks, or private peer-to-peer messages.
 user-invocable: true
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: upload-download
-description: Upload and download data, files, or directories on Swarm
+description: Upload and download data, files, directories, and collections on Swarm via bee-js, swarm-cli, or the Bee HTTP API (/bytes and /bzz), in Node.js or the browser. Covers references, content types, and retrieval by hash. Use when the user wants to store or retrieve content and already has a running node and a postage stamp.
 user-invocable: true
 ---
 
@@ -203,7 +203,8 @@ Headers for upload:
 | "stamp not usable" | Stamp hasn't propagated yet — wait 2-3 minutes after buying |
 | "insufficient funds" | Wallet needs xBZZ — see `/setup-bee` funding section |
 | Connection refused | Node isn't running — route to `/setup-bee` |
-| 402 response | No usable stamp — route to `/stamps` |
+| 400 "invalid header params" | Missing/malformed `Swarm-Postage-Batch-Id` header — check the stamp header |
+| 404 "batch with id not found" | Invalid/unknown stamp ID, or no usable stamp — route to `/stamps` |
 | "not found" on download | Content may have expired, or reference is wrong |
 | Other errors | Route to `/troubleshoot` |
 

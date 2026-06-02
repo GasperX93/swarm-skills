@@ -1,6 +1,6 @@
 ---
 name: setup-bee
-description: Install and run a Bee light node for Swarm development
+description: Install and run a Bee light node for Swarm development on Linux/macOS — system prerequisites (Node.js, curl), Bee and swarm-cli install, funding the node (gift code or xDAI/xBZZ on Gnosis Chain), upgrading ultra-light to light, and buying a first postage stamp. Use when the user has no node, gets connection-refused on localhost:1633, or needs to start or fund Bee.
 user-invocable: true
 ---
 

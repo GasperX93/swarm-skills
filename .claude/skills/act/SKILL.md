@@ -1,6 +1,6 @@
 ---
 name: act
-description: Encrypt data on Swarm with per-account access control (ACT)
+description: Encrypt data on Swarm and control who can read it with ACT (Access Control Trie) — per-account access via Ethereum public keys, grantee lists, and add/revoke of access, using bee-js or swarm-cli. Use for private files, paid or subscriber-only content, or team-restricted data where only authorized accounts can decrypt.
 user-invocable: true
 ---
 
