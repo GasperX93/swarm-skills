@@ -10,21 +10,23 @@ Guide a developer through uploading and downloading data on Swarm. Requires a ru
 
 ## Before Starting (run immediately)
 
-**Run these checks now — do not just show the commands to the user:**
+Run these checks now — **don't** just show the commands. **Narrate each one in a short line as you go** so the user can see what's happening, but **don't pause to ask permission**: these are read-only `GET`s to a local node. (Operations that cost xBZZ — buying or topping up a stamp — still require explicit confirmation; that rule is unchanged.)
 
-1. Node running?
+1. **Tell the user "Checking your Bee node…"**, then run:
    ```bash
    curl -s http://localhost:1633/status | jq .beeMode
    ```
-   If this fails → route to `/setup-bee`
+   - Reachable → confirm in one line, e.g. **"✓ Node is up (light mode)."**
+   - Fails / not reachable → **"✗ No Bee node running."** and route to `/setup-bee`.
 
-2. Stamp available?
+2. **Tell the user "Checking for a usable postage stamp…"**, then run:
    ```bash
    curl -s http://localhost:1633/stamps | jq '.stamps[] | select(.usable==true) | {batchID, depth, batchTTL}'
    ```
-   If no usable stamps → route to `/stamps`
+   - A usable stamp exists → **"✓ Found a usable stamp."** and proceed.
+   - None → **"✗ No usable stamp."** and route to `/stamps`.
 
-Present results briefly, then proceed.
+Keep each line to a few words. The point is transparency, not a confirmation gate — narrate, then continue.
 
 ## What to Ask
 
